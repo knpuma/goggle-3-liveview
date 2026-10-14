@@ -1,0 +1,22 @@
+<Application x:Class="Goggles3.Windows.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StartupUri="MainWindow.xaml">
+ <Application.Resources>
+  <SolidColorBrush x:Key="Mint" Color="#30DBCF"/>
+  <Style TargetType="Button">
+   <Setter Property="Foreground" Value="White"/><Setter Property="FontSize" Value="14"/>
+   <Setter Property="FontWeight" Value="Medium"/><Setter Property="Padding" Value="14,9"/>
+   <Setter Property="Background" Value="#303C494B"/><Setter Property="BorderThickness" Value="0"/>
+   <Setter Property="Cursor" Value="Hand"/><Setter Property="Focusable" Value="True"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+    <Border x:Name="ButtonShape" Background="{TemplateBinding Background}" CornerRadius="18" Padding="{TemplateBinding Padding}">
+     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </Border>
+    <ControlTemplate.Triggers>
+     <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="ButtonShape" Property="Opacity" Value="0.82"/></Trigger>
+     <Trigger Property="IsEnabled" Value="False"><Setter TargetName="ButtonShape" Property="Opacity" Value="0.4"/></Trigger>
+     <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="ButtonShape" Property="BorderThickness" Value="2"/><Setter TargetName="ButtonShape" Property="BorderBrush" Value="#8080DFFF"/></Trigger>
+    </ControlTemplate.Triggers>
+   </ControlTemplate></Setter.Value></Setter>
+  </Style>
+ </Application.Resources>
+</Application>

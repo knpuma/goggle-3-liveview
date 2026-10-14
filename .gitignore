@@ -1,0 +1,9 @@
+.build/
+work/
+outputs/
+**/bin/
+**/obj/
+**/TestResults/
+**/config.mak
+*.pdb
+.DS_Store

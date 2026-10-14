@@ -1,0 +1,73 @@
+<Window x:Class="Goggles3.Windows.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Goggle 3 LiveView" Width="1180" Height="720"
+ MinWidth="860" MinHeight="500" Background="Black" Foreground="White" FontFamily="Segoe UI Variable, Segoe UI"
+ WindowStyle="None" ResizeMode="CanResize" WindowStartupLocation="CenterScreen" Icon="AppIcon.png" PreviewKeyDown="WindowKeyDown" Closing="WindowClosing">
+ <WindowChrome.WindowChrome><WindowChrome CaptionHeight="28" ResizeBorderThickness="6" CornerRadius="14" GlassFrameThickness="0"/></WindowChrome.WindowChrome>
+ <Grid x:Name="Root">
+  <Grid.RowDefinitions><RowDefinition x:Name="CaptionRow" Height="28"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+  <StackPanel x:Name="CaptionControls" Orientation="Horizontal" Margin="14,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+   <Button Width="12" Height="12" Padding="0" Background="#FF6059" ToolTip="Cerrar" Click="CloseClick" WindowChrome.IsHitTestVisibleInChrome="True" AutomationProperties.AutomationId="CloseButton"/>
+   <Button Width="12" Height="12" Padding="0" Background="#FFBD2E" Margin="8,0" ToolTip="Minimizar" Click="MinimizeClick" WindowChrome.IsHitTestVisibleInChrome="True" AutomationProperties.AutomationId="MinimizeButton"/>
+   <Button Width="12" Height="12" Padding="0" Background="#28C840" ToolTip="Maximizar" Click="MaximizeClick" WindowChrome.IsHitTestVisibleInChrome="True" AutomationProperties.AutomationId="MaximizeButton"/>
+  </StackPanel>
+  <Grid Grid.Row="1">
+   <Grid x:Name="Idle">
+    <Grid.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#0B1F24" Offset="0"/><GradientStop Color="Black" Offset="1"/></LinearGradientBrush></Grid.Background>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+     <Viewbox Width="68" Height="52" Margin="0,0,0,18"><Path Stroke="#D966D4CA" StrokeThickness="1.5" Data="M 4,9 Q 3,3 10,3 L 38,3 Q 45,3 44,9 L 42,20 Q 41,24 35,24 L 27,22 Q 24,17 21,22 L 13,24 Q 6,24 5,20 Z M 1,11 L 1,18 M 47,11 L 47,18"/></Viewbox>
+     <TextBlock x:Name="IdleTitle" Text="Tu visión, en una pantalla más grande" FontSize="22" FontWeight="Medium" HorizontalAlignment="Center"/>
+     <TextBlock x:Name="IdleHint" Text="Conecta las Goggles 3 por USB-C y pulsa Conectar." FontSize="14" Foreground="#80FFFFFF" Margin="0,14,0,0" HorizontalAlignment="Center"/>
+    </StackPanel>
+   </Grid>
+   <Image x:Name="Video" Stretch="Uniform" RenderOptions.BitmapScalingMode="LowQuality"/>
+   <Grid x:Name="Hud">
+    <Border Height="135" VerticalAlignment="Top">
+     <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#BF000000" Offset="0"/><GradientStop Color="#00000000" Offset="1"/></LinearGradientBrush></Border.Background>
+    </Border>
+    <DockPanel VerticalAlignment="Top" Margin="28,38,28,0" LastChildFill="False">
+     <StackPanel DockPanel.Dock="Left">
+      <TextBlock Text="GOGGLE 3 LIVEVIEW" FontSize="15" FontWeight="SemiBold"/>
+      <TextBlock Text="U S B  L I V E  V I E W" FontSize="9" Foreground="#8CFFFFFF" Margin="0,5,0,0"/>
+     </StackPanel>
+     <Border DockPanel.Dock="Right" Background="#73000000" CornerRadius="18" Padding="12,8" VerticalAlignment="Top">
+      <StackPanel Orientation="Horizontal"><Ellipse x:Name="StatusDot" Fill="#60FFFFFF" Width="6" Height="6" Margin="0,0,8,0"/>
+       <TextBlock x:Name="Status" Text="Listo para conectar" FontSize="11" FontWeight="Medium" AutomationProperties.AutomationId="ConnectionStatus"/>
+      </StackPanel>
+     </Border>
+    </DockPanel>
+    <Border Height="155" VerticalAlignment="Bottom">
+     <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#00000000" Offset="0"/><GradientStop Color="#8C000000" Offset="1"/></LinearGradientBrush></Border.Background>
+    </Border>
+    <StackPanel VerticalAlignment="Bottom" Margin="24,0,24,22">
+     <Border x:Name="RecordingNotice" Visibility="Collapsed" Background="#A6000000" CornerRadius="16" Padding="14,8" HorizontalAlignment="Left" Margin="0,0,0,10">
+      <TextBlock x:Name="RecordingText" FontSize="12" Foreground="#B3FFFFFF"/>
+     </Border>
+     <Border Background="#C01A2E30" CornerRadius="16" BorderBrush="#1AFFFFFF" BorderThickness="1" Padding="16">
+      <Grid>
+       <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <Button x:Name="ConnectButton" Background="{StaticResource Mint}" Foreground="Black" Click="ConnectClick" AutomationProperties.AutomationId="ConnectButton">
+         <StackPanel Orientation="Horizontal"><Path x:Name="ConnectGlyph" Width="12" Height="14" Stretch="Uniform" Fill="Black" Data="M 7,0 L 0,8 L 5,8 L 3,15 L 11,6 L 6,6 Z" Margin="0,0,10,0"/><TextBlock x:Name="ConnectLabel" Text="Conectar"/></StackPanel>
+        </Button>
+        <Button x:Name="TutorialButton" Click="TutorialClick" Margin="12,0,0,0" AutomationProperties.AutomationId="TutorialButton">
+         <StackPanel Orientation="Horizontal"><Grid Width="17" Height="17" Margin="0,0,8,0"><Ellipse Stroke="White" StrokeThickness="1.4"/><Path Stroke="White" StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M 6,6 Q 6,3.7 8.5,3.7 Q 11.5,3.7 11.5,6 Q 11.5,7.5 8.5,9 L 8.5,10 M 8.5,12.5 L 8.5,12.7"/></Grid><TextBlock Text="Tutorial"/></StackPanel>
+        </Button>
+        <Button x:Name="RecordButton" Click="RecordClick" Margin="12,0,0,0" IsEnabled="False" AutomationProperties.AutomationId="RecordButton">
+         <StackPanel Orientation="Horizontal"><Grid Width="16" Height="16" Margin="0,0,8,0"><Ellipse Stroke="White" StrokeThickness="1.5"/><Ellipse x:Name="RecordDot" Fill="White" Width="7" Height="7"/></Grid><TextBlock x:Name="RecordLabel" Text="Grabar"/></StackPanel>
+        </Button>
+        <Button x:Name="FullscreenButton" Click="FullscreenClick" Margin="12,0,0,0" Padding="12,9" ToolTip="Pantalla completa sin controles · Esc para salir" AutomationProperties.Name="Pantalla completa sin controles" AutomationProperties.AutomationId="FullscreenButton">
+         <Path Width="18" Height="18" Stroke="White" StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M 3,9 L 3,3 L 9,3 M 3,3 L 9,9 M 15,9 L 15,15 L 9,15 M 15,15 L 9,9"/>
+        </Button>
+       </StackPanel>
+       <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+        <StackPanel MinWidth="65"><TextBlock Text="F P S" FontSize="9" Foreground="#73FFFFFF"/><TextBlock x:Name="Fps" Text="—" FontSize="15" FontWeight="Medium" Margin="0,4,0,0"/></StackPanel>
+        <StackPanel MinWidth="100" Margin="12,0,0,0"><TextBlock Text="R E S O L U C I Ó N" FontSize="9" Foreground="#73FFFFFF"/><TextBlock x:Name="Resolution" Text="—" FontSize="15" FontWeight="Medium" Margin="0,4,0,0"/></StackPanel>
+        <StackPanel MinWidth="65" Margin="12,0,0,0"><TextBlock Text="B I T R A T E" FontSize="9" Foreground="#73FFFFFF"/><TextBlock x:Name="Bitrate" Text="—" FontSize="15" FontWeight="Medium" Margin="0,4,0,0"/></StackPanel>
+       </StackPanel>
+      </Grid>
+     </Border>
+    </StackPanel>
+   </Grid>
+  </Grid>
+ </Grid>
+</Window>
