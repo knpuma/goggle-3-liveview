@@ -8,19 +8,45 @@ Visor gratuito y de código abierto para **Mac y Windows**. Conecta las gafas po
 
 [**Descargar la app**](https://knpuma.github.io/goggle-3-liveview/#descargar) · [**Instalación y ayuda**](https://knpuma.github.io/goggle-3-liveview/#instalar) · [Reportar un problema](https://github.com/knpuma/goggle-3-liveview/issues)
 
+## Dos aplicaciones independientes
+
+| Aplicación | Para qué sirve | Disponible para |
+|---|---|---|
+| **Goggle 3 LiveView 0.3.1** | Una gafa, una imagen y grabación individual | Mac Apple Silicon y Windows |
+| **[Goggle 3 LiveView Multi 0.4.0](https://knpuma.github.io/goggle-3-liveview/#multi)** | Hasta cuatro canales USB, mosaico 2×2 y grabación individual o global | Mac Apple Silicon |
+
+**Multi no sustituye ni actualiza la app original.** Puedes instalar ambas; cierra una antes de usar las mismas gafas en la otra. Tienen nombres y carpetas de grabación separados.
+
 ![Ventana de Goggle 3 LiveView](docs/assets/app-mac.png)
 
-## Elige tu descarga
+## Goggle 3 LiveView · una gafa
 
 | Tu equipo | Archivo |
 |---|---|
-| Mac con chip Apple M1 o posterior, macOS 14+ | [Mac · DMG](https://github.com/knpuma/goggle-3-liveview/releases/latest/download/Goggle-3-LiveView-Mac-Apple-Silicon.dmg) |
-| Windows 11 con procesador Intel o AMD | [Windows · x64 ZIP](https://github.com/knpuma/goggle-3-liveview/releases/latest/download/Goggle-3-LiveView-Windows-x64.zip) |
-| Windows 11 con procesador ARM, por ejemplo Snapdragon | [Windows · ARM64 ZIP](https://github.com/knpuma/goggle-3-liveview/releases/latest/download/Goggle-3-LiveView-Windows-arm64.zip) |
+| Mac con chip Apple M1 o posterior, macOS 14+ | [Mac · DMG](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.1/Goggle-3-LiveView-Mac-Apple-Silicon.dmg) |
+| Windows 11 con procesador Intel o AMD | [Windows · x64 ZIP](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.1/Goggle-3-LiveView-Windows-x64.zip) |
+| Windows 11 con procesador ARM, por ejemplo Snapdragon | [Windows · ARM64 ZIP](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.1/Goggle-3-LiveView-Windows-arm64.zip) |
 
 **Mac:** abre el DMG y arrastra la app a Aplicaciones. **Windows:** extrae todo el ZIP y abre `Goggle 3 LiveView.exe`; conserva los demás archivos junto al ejecutable. No necesitas herramientas de desarrollo.
 
 La distribución no tiene certificado comercial ni notarización de Apple. Si el sistema muestra un aviso, verifica que has descargado desde este repositorio y consulta la [guía de instalación](https://knpuma.github.io/goggle-3-liveview/#instalar). No desactives la protección global de tu equipo.
+
+## Goggle 3 LiveView Multi · cuatro espacios de vídeo
+
+**[Descargar Multi para Mac · DMG](https://github.com/knpuma/goggle-3-liveview/releases/download/multi-v0.4.0/Goggle-3-LiveView-Multi-Mac.dmg)** · [Guía de Multi](Multi/README.md) · [Archivos de esta versión](https://github.com/knpuma/goggle-3-liveview/releases/tag/multi-v0.4.0)
+
+Requiere Apple Silicon y macOS 14 o posterior. Esta descarga es solo para Mac; la app original mantiene sus versiones de Mac y Windows.
+
+![Goggle 3 LiveView Multi con una gafa USB conectada y tres paneles libres](docs/assets/multi-mac.png)
+
+- **Mosaico 2×2:** hasta cuatro canales con nombre, conexión, FPS, resolución y bitrate independientes.
+- **Grabación individual y global:** guarda un canal o todo el mosaico en MP4. Puedes usar ambas opciones a la vez. El mosaico es 1920×1080, aproximadamente 30 fps, y mantiene su disposición aunque amplíes un panel.
+- **Pantalla completa:** por canal o para el mosaico, sin controles. Esc vuelve a la ventana.
+- **Tus archivos separados:** Películas → Goggle 3 LiveView Multi. Sin audio ni subidas a Internet.
+
+![Tutorial integrado en Goggle 3 LiveView Multi](docs/assets/multi-tutorial.png)
+
+**¿Encuentras un error o fallo? [Notifícalo aquí](https://github.com/knpuma/goggle-3-liveview/issues/new?template=multi-error.yml).** Indica versión, equipo, macOS, número de gafas y pasos para reproducirlo. No incluyas números de serie ni información privada.
 
 ## Conecta en cuatro pasos
 
@@ -58,6 +84,8 @@ open "outputs/Goggle 3 LiveView.app"
 ```
 
 [Construcción de Windows](Windows/README.md) · [Componentes y fuentes de terceros](THIRD_PARTY_NOTICES.md)
+
+La app Multi tiene su propio proyecto Swift en [Multi/](Multi/README.md), separado de los targets de la app original y publicado también bajo MIT.
 
 Los nombres históricos de algunos módulos y el identificador interno se conservan por compatibilidad. Las grabaciones antiguas de Goggles3Mac permanecen en su carpeta original.
 

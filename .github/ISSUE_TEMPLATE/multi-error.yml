@@ -1,0 +1,35 @@
+name: Error en Goggle 3 LiveView Multi
+description: Notifica un fallo en la aplicación Multi para Mac.
+title: "[Multi] "
+body:
+  - type: markdown
+    attributes:
+      value: "Gracias por ayudarnos a mejorar Multi. No incluyas números de serie ni información privada. Este formulario corresponde a la app Multi, independiente del visor original."
+  - type: input
+    id: version
+    attributes:
+      label: Versión de Multi
+      placeholder: "0.4.0 (build 2)"
+    validations:
+      required: true
+  - type: input
+    id: mac
+    attributes:
+      label: Mac y versión de macOS
+      placeholder: "MacBook Air M2, macOS…"
+    validations:
+      required: true
+  - type: input
+    id: goggles
+    attributes:
+      label: Gafas y conexión USB
+      description: "Número de Goggles 3, firmware si lo conoces, conexión directa o modelo del hub. Sin números de serie."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Qué ocurrió y cómo reproducirlo
+      description: "Explica qué esperabas, qué pasó y si estabas grabando un canal o el mosaico. Puedes añadir capturas sin datos privados."
+    validations:
+      required: true
