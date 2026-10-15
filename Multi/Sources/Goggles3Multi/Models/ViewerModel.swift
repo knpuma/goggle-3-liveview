@@ -9,7 +9,7 @@ final class ViewerModel: ObservableObject, Identifiable {
     @Published var name: String
     @Published var source: InputSelection?
     var mosaic: MosaicRecorder?
-    init(id: Int) { self.id = id; name = "Gafas \(id + 1)" }
+    init(id: Int) { self.id = id; name = "Goggles \(id + 1)" }
     @Published var running = false
     let frameStore = VideoFrameStore()
     var image: CGImage? {
@@ -38,13 +38,13 @@ final class ViewerModel: ObservableObject, Identifiable {
         stop()
         let token = generation
         mosaic?.reset(id, token: token, demo: source.isDemo)
-        running = true; status = "Abriendo conexión con las gafas…"; log = ""; image = nil
+        running = true; status = "Connecting to the goggles…"; log = ""; image = nil
         frames = 0; lastStats = Date(); lastFrameTime = Date()
         watchdog = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             Task { @MainActor in
                 guard let self, self.generation == token, self.running else { return }
                 if Date().timeIntervalSince(self.lastFrameTime) > 3 {
-                    self.status = "Esperando imagen · comprueba LiveView en las gafas"
+                    self.status = "Waiting for video · check LiveView on the goggles"
                     self.image = nil; self.fps = 0; self.bitrate = 0
                 }
             }
@@ -59,7 +59,7 @@ final class ViewerModel: ObservableObject, Identifiable {
                 defer { delivery.release() }
                 guard let self, self.generation == token else { return }
                 self.image = frame
-                let state = source.isDemo ? "DEMO · señal de prueba, no USB" : "En directo · USB"
+                let state = source.isDemo ? "DEMO · test signal, not USB" : "Live · USB"
                 if self.status != state { self.status = state }
                 self.lastFrameTime = Date()
                 self.frames += 1
@@ -103,7 +103,7 @@ final class ViewerModel: ObservableObject, Identifiable {
             Task { @MainActor in
                 guard let self, self.recordingURL == url else { return }
                 self.recording = false; self.finalizingRecording = false
-                self.recordingMessage = error ?? "Guardado: \(url.lastPathComponent)"
+                self.recordingMessage = error ?? "Saved: \(url.lastPathComponent)"
             }
         }
         stream = session
@@ -115,16 +115,16 @@ final class ViewerModel: ObservableObject, Identifiable {
         generation = UUID()
         mosaic?.reset(id, token: generation, demo: source?.isDemo == true)
         watchdog?.invalidate(); watchdog = nil
-        if recording { recording = false; finalizingRecording = true; recordingMessage = "Finalizando el archivo MP4…" }
+        if recording { recording = false; finalizingRecording = true; recordingMessage = "Finalizing the MP4 file…" }
         stream?.stop(); stream = nil; running = false; image = nil; metrics = ""
-        status = "Desconectado"; fps = 0; bitrate = 0
+        status = "Disconnected"; fps = 0; bitrate = 0
         presentedFPS = 0
     }
 
     func toggleRecording() {
         guard let stream, (recording || image != nil), !finalizingRecording else { return }
         if recording {
-            recording = false; finalizingRecording = true; recordingMessage = "Finalizando el archivo MP4…"
+            recording = false; finalizingRecording = true; recordingMessage = "Finalizing the MP4 file…"
             stream.stopRecording()
         } else {
             do {
@@ -133,10 +133,10 @@ final class ViewerModel: ObservableObject, Identifiable {
                 try FileManager.default.createDirectory(at: movies, withIntermediateDirectories: true)
                 let stamp = DateFormatter(); stamp.dateFormat = "yyyy-MM-dd_HH-mm-ss"
                 let mode = source?.isDemo == true ? "DEMO" : "USB"
-                let url = movies.appendingPathComponent("\(mode)_Canal-\(id + 1)_\(stamp.string(from: Date()))_\(UUID().uuidString.prefix(8)).mp4")
+                let url = movies.appendingPathComponent("\(mode)_Channel-\(id + 1)_\(stamp.string(from: Date()))_\(UUID().uuidString.prefix(8)).mp4")
                 try stream.startRecording(to: url)
                 recordingURL = url
-                recording = true; recordingMessage = "Grabando · \(url.lastPathComponent)"
+                recording = true; recordingMessage = "Recording · \(url.lastPathComponent)"
             } catch { recordingMessage = error.localizedDescription }
         }
     }

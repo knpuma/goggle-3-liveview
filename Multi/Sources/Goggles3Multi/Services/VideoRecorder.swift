@@ -52,7 +52,7 @@ final class VideoRecorder: @unchecked Sendable {
                 var pixel: CVPixelBuffer?
                 guard bytes.count == 1920 * 1080 * 4,
                       CVPixelBufferPoolCreatePixelBuffer(nil, pool, &pixel) == kCVReturnSuccess,
-                      let pixel else { failure = "No se pudo preparar un fotograma."; return }
+                      let pixel else { failure = "Could not prepare a video frame."; return }
                 CVPixelBufferLockBaseAddress(pixel, [])
                 if let destination = CVPixelBufferGetBaseAddress(pixel) {
                     let stride = CVPixelBufferGetBytesPerRow(pixel)
@@ -65,7 +65,7 @@ final class VideoRecorder: @unchecked Sendable {
                 if firstTime == nil { firstTime = time }
                 let timestamp = CMTime(seconds: time - (firstTime ?? time), preferredTimescale: 60000)
                 if adaptor.append(pixel, withPresentationTime: timestamp) { frames += 1 }
-                else { failure = writer.error?.localizedDescription ?? "No se pudo escribir un fotograma." }
+                else { failure = writer.error?.localizedDescription ?? "Could not write a video frame." }
             }
         }
     }
@@ -76,12 +76,12 @@ final class VideoRecorder: @unchecked Sendable {
         queue.async { [self] in
             input.markAsFinished()
             if frames == 0 {
-                writer.cancelWriting(); onEnd?(url, "Sin fotogramas: no se ha creado un vídeo válido."); return
+                writer.cancelWriting(); onEnd?(url, "No frames received: no valid video was created."); return
             }
             writer.finishWriting { [self] in
                 lock.lock(); let dropped = skipped; lock.unlock()
-                let message = writer.status != .completed ? (writer.error?.localizedDescription ?? "No se pudo finalizar el MP4.") : failure
-                onEnd?(url, message ?? (dropped > 0 ? "Guardado con \(dropped) fotogramas omitidos por carga: \(url.lastPathComponent)" : nil))
+                let message = writer.status != .completed ? (writer.error?.localizedDescription ?? "Could not finalize the MP4 file.") : failure
+                onEnd?(url, message ?? (dropped > 0 ? "Guardado con \(dropped) frames dropped under load: \(url.lastPathComponent)" : nil))
             }
         }
     }

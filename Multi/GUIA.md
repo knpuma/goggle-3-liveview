@@ -1,39 +1,43 @@
 # Goggle 3 LiveView Multi
 
-Cuatro espacios de vídeo, controles independientes y grabación del mosaico en una sola ventana.
+Four video panels, independent controls and mosaic recording in one window.
 
-## Instalar en Mac
+## Install on Mac
 
-Requiere Apple Silicon y macOS 14 o posterior. Abre el DMG y arrastra **Goggle 3 LiveView Multi** a **Aplicaciones**. Puede convivir con Goggle 3 LiveView; cierra el visor original antes de usar las mismas gafas en Multi.
+Requires Apple Silicon and macOS 14 or later. Open the DMG and drag **Goggle 3 LiveView Multi** to **Applications**. Multi is separate from the original viewer: both can be installed, but close one before using the same goggles in the other.
 
-La aplicación tiene firma local y no está notarizada por Apple. Comprueba su procedencia. No es necesario desactivar las protecciones globales del Mac.
+This app is locally signed, not notarized by Apple. Verify the download source and follow the [installation guide](https://knpuma.github.io/goggle-3-liveview/#instalar). Do not disable macOS security protections.
 
-## Preparar cada DJI Goggles 3
+## Set up each pair of DJI Goggles 3
 
-1. Enciende las gafas y conecta un cable USB de datos al Mac.
-2. Activa **Configuración → Acerca de → Conexión por cable OTG**.
-3. En los accesos directos —botón 5D hacia atrás— activa **Compartir la vista en directo con el dispositivo móvil por Wi-Fi**. El vídeo de esta app llega por USB; no necesitas conectar el Mac a ese Wi-Fi.
-4. Para visualizar la pantalla sin aeronave vinculada, mantén habilitada **Grabación de la vista de cámara**, en **Configuración → Cámara → Configuración avanzada de la cámara**.
-5. Elige el puerto USB en un panel y pulsa **Conectar**. Para más gafas, usa un cable y un puerto diferente por dispositivo. Puedes nombrar cada panel.
+1. Power on the goggles and connect a USB **data** cable to your Mac.
+2. Enable **Settings → About → OTG Wired Connection**.
+3. Push the **5D button backward** to open shortcuts and enable **liveview sharing to a mobile device via Wi-Fi**. This app receives video over USB; the Mac does not need to join that Wi-Fi network.
+4. Without a linked aircraft, keep **Camera View Recording** enabled under **Settings → Camera → Advanced Camera Settings**.
+5. Select a USB port in a panel and click **Connect**. For more goggles, use a separate cable and port for each device. Name each panel to identify its pilot.
 
-Cada selector muestra solo las gafas libres y las asignadas a ese mismo panel. Para mover unas gafas a otro panel, pulsa **Desconectar** y elige **Sin asignar** en el panel original; entonces estarán disponibles en los demás. Desconectar detiene el vídeo, pero conserva la asignación hasta que la liberes.
+To move goggles to another panel, click **Disconnect**, then choose **Unassigned** in the original panel before selecting them elsewhere.
 
-Los nombres de los ajustes se recogen en el [manual oficial DJI Goggles 3](https://dl.djicdn.com/downloads/DJI_Goggles_3/20240528/DJI_Goggles_3_User_Manual_ES.pdf). La combinación necesaria para recibir la pantalla sin aeronave se basa en la comprobación con las gafas conectadas; no es una garantía de DJI para esta aplicación independiente.
+Setting names follow the [official DJI manual](https://dl.djicdn.com/downloads/DJI_Goggles_3/DJI_Goggles_3_User_Manual_EN.pdf). USB reception by this app and operation without an aircraft are independent project features, not functions documented or endorsed by DJI for this application.
 
-## Grabar y ampliar la imagen
+## Record and use fullscreen
 
-- **Grabar**, en un panel: guarda solo esa imagen en un MP4 de 1920×1080.
-- **Grabar mosaico**, en la barra inferior: guarda los cuatro paneles en un MP4 de 1920×1080, aproximadamente a 30 fps. Los canales sin señal quedan negros.
-- Puedes grabar canales individuales y mosaico a la vez. Esto aumenta la carga del equipo.
-- Los vídeos, sin audio, se guardan en **Películas/Goggle 3 LiveView Multi**. Pulsa **Detener** y espera a la confirmación de guardado.
-- El icono junto a cada botón de grabar abre la imagen correspondiente a pantalla completa sin controles. **Esc** vuelve a la ventana. Ampliar un panel no altera el mosaico grabado.
+- **Record** in a panel saves that channel as a 1920×1080 MP4.
+- **Record mosaic** saves all four panels as one 1920×1080 MP4 at approximately 30 fps. Panels without a signal remain black.
+- Individual and mosaic recording can run together; this increases system load.
+- Recordings have no audio and are saved in **Movies → Goggle 3 LiveView Multi**. Click **Stop** and wait for confirmation that the file was saved.
+- The icon beside Record opens clean fullscreen. **Esc** returns to the window. Expanding a panel does not alter the recorded mosaic.
 
-**FPS** indica fotogramas decodificados por segundo, no la frecuencia del panel de las gafas. Al situar el puntero sobre el contador puedes consultar también los fotogramas presentados. El bitrate es el recibido por la app; no es el bitrate del enlace de radio.
+**FPS** measures decoded frames per second, not the goggles display refresh rate. Hover over it for displayed FPS. Bitrate is received USB video throughput, not the drone radio link bitrate.
 
-## Si no aparece imagen
+## If no video arrives
 
-Comprueba el cable de datos, OTG y la vista en directo. Cierra otros visores que utilicen las mismas gafas. Desconecta el canal en la app, desactiva y vuelve a activar la vista en directo en las gafas y vuelve a conectar. Si has desenchufado el cable, selecciona de nuevo el puerto en el panel.
+Check the data cable, OTG and LiveView sharing. Close other viewers using the same goggles. Disconnect the affected channel, switch LiveView sharing off and on again on those goggles, then reconnect. After unplugging a cable, select the USB device again.
 
-Utiliza las gafas como pantalla principal para pilotar. La aplicación no modifica el firmware ni envía las grabaciones a Internet.
+Always use the goggles as your primary display when flying. This app does not modify firmware or upload recordings to the Internet.
 
-Código MIT. FFmpeg conserva su licencia LGPL 2.1 o posterior; se incluyen sus avisos y el código fuente correspondiente. Aplicación independiente, no afiliada a DJI.
+## Report a problem
+
+[Report an issue on GitHub](https://github.com/knpuma/goggle-3-liveview/issues/new?template=multi-error.yml). Include your app version and language, Mac model, macOS version, number of goggles, hub or direct connection, and reproduction steps. Do not include serial numbers or private information.
+
+Project code: MIT. FFmpeg: LGPL 2.1 or later, with its notices and matching source supplied. Independent project, not affiliated with DJI.

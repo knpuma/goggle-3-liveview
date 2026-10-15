@@ -16,7 +16,7 @@ struct MultiView: View {
                         Text("MULTI VIEW").font(.system(size: 9, weight: .medium)).tracking(2).foregroundStyle(.mint)
                     }
                     Spacer()
-                    Label("\(model.devices.count) gafas USB", systemImage: "circle.fill").font(.caption)
+                    Label("\(model.devices.count) USB goggles", systemImage: "circle.fill").font(.caption)
                         .foregroundStyle(.mint).padding(.horizontal, 12).padding(.vertical, 8)
                         .background(.black.opacity(0.45), in: Capsule())
                 }.padding(.horizontal, 8).padding(.top, 22).padding(.bottom, 8)
@@ -31,25 +31,25 @@ struct MultiView: View {
             if !fullScreen {
                 if !model.mosaicMessage.isEmpty { Text(model.mosaicMessage).font(.caption).foregroundStyle(model.mosaicRecording ? .red : .secondary).lineLimit(1).help(model.mosaicMessage) }
                 HStack(spacing: 10) {
-                    Button("Conectar todas", systemImage: "bolt.fill") { model.startAll() }.buttonStyle(MintPill())
+                    Button("Connect all", systemImage: "bolt.fill") { model.startAll() }.buttonStyle(MintPill())
                     Button("Tutorial", systemImage: "questionmark.circle") { tutorial = true }.buttonStyle(DarkPill())
-                    Button(model.mosaicRecording ? "Detener mosaico" : (model.mosaicFinalizing ? "Guardando…" : "Grabar mosaico"), systemImage: model.mosaicRecording ? "stop.circle.fill" : "record.circle") { model.toggleMosaicRecording() }
+                    Button(model.mosaicRecording ? "Stop mosaic" : (model.mosaicFinalizing ? "Saving…" : "Record mosaic"), systemImage: model.mosaicRecording ? "stop.circle.fill" : "record.circle") { model.toggleMosaicRecording() }
                         .buttonStyle(DarkPill()).foregroundStyle(model.mosaicRecording ? .red : .white).disabled(model.mosaicFinalizing)
                     Button { enterFullscreen(nil) } label: { Image(systemName: "arrow.up.left.and.arrow.down.right") }
-                        .buttonStyle(DarkPill()).help("Mosaico a pantalla completa · Esc para salir")
-                        .accessibilityLabel("Mosaico a pantalla completa")
+                        .buttonStyle(DarkPill()).help("Fullscreen mosaic · press Esc to exit")
+                        .accessibilityLabel("Fullscreen mosaic")
                     Spacer(minLength: 8)
                     #if DEBUG
                     Menu {
-                        Button("DEMO en huecos libres") { model.addDemos() }
-                        Button("Quitar DEMO") { model.clearDemos() }
+                        Button("Fill empty slots with DEMO") { model.addDemos() }
+                        Button("Remove DEMO") { model.clearDemos() }
                         Divider()
-                        Button("Desconectar todas") { model.stopAll() }
-                        Button("Guardar informe de prueba") { model.exportReport() }
-                    } label: { Label("Pruebas", systemImage: "slider.horizontal.3") }
+                        Button("Disconnect all") { model.stopAll() }
+                        Button("Save test report") { model.exportReport() }
+                    } label: { Label("Testing", systemImage: "slider.horizontal.3") }
                     .menuStyle(.borderlessButton).fixedSize().padding(.horizontal, 12)
                     #else
-                    Button("Desconectar todas", systemImage: "stop.fill") { model.stopAll() }
+                    Button("Disconnect all", systemImage: "stop.fill") { model.stopAll() }
                         .buttonStyle(DarkPill())
                     #endif
                 }.font(.system(size: 12))

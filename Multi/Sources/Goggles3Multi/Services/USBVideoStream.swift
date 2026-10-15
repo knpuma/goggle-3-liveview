@@ -46,7 +46,7 @@ final class USBVideoStream: @unchecked Sendable {
         let root = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         let path = name == "g3-decoder" ? root.appendingPathComponent("third_party/ffmpeg/ffmpeg") : root.appendingPathComponent(".build/debug/" + name)
         guard FileManager.default.isExecutableFile(atPath: path.path) else {
-            throw NSError(domain: "Goggles3Mac", code: 1, userInfo: [NSLocalizedDescriptionKey: "Falta el receptor o el decodificador. Reconstruye la aplicación con scripts/make-app.sh."])
+            throw NSError(domain: "Goggles3Mac", code: 1, userInfo: [NSLocalizedDescriptionKey: "The receiver or decoder is missing. Reinstall the complete application."])
         }
         return path
     }
@@ -159,7 +159,7 @@ final class USBVideoStream: @unchecked Sendable {
         }
         lock.lock(); let deliberate = stopping; lock.unlock()
         stop()
-        if !deliberate { onEnd?(source.isDemo ? "La señal DEMO se ha cerrado." : "La conexión se ha cerrado. Revisa el cable y Compartir LiveView.") }
+        if !deliberate { onEnd?(source.isDemo ? "The DEMO signal has ended." : "Connection closed. Check the cable and LiveView sharing.") }
     }
 
     func stop() {

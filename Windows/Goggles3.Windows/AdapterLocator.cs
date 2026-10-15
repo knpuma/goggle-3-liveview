@@ -27,9 +27,9 @@ internal static class AdapterLocator
                 pnp.Length <= prefix.Length || pnp[prefix.Length] is not ('&' or '\\')) continue;
             if (CM_Locate_DevNodeW(out uint node, pnp, 0) != 0) continue;
             if (CM_Get_DevNode_Status(out uint status, out uint problem, node, 0) != 0)
-                throw new IOException("No se pudo comprobar el estado del USB de las gafas.");
+                throw new IOException("Could not check the goggles USB status.");
             if ((status & 0x400) != 0) // DN_HAS_PROBLEM
-                throw new IOException($"Windows no puede activar el USB de las gafas (código {problem}). Reconecta el cable; en una máquina virtual, comprueba la redirección USB.");
+                throw new IOException($"Windows cannot activate the goggles USB device (code {problem}). Reconnect the cable; in a virtual machine, check USB forwarding.");
             foreach (UnicastIPAddressInformation address in adapter.GetIPProperties().UnicastAddresses)
                 if (address.Address.Equals(IPAddress.Parse("192.168.60.1")) && address.PrefixLength == 24) return address.Address;
         }
@@ -45,8 +45,8 @@ internal static class AdapterLocator
     {
         var info = new ProcessStartInfo("powershell.exe") { UseShellExecute = true, Verb = "runas" };
         info.Arguments = "-NoProfile -ExecutionPolicy Bypass -File \"" + Path.Combine(AppContext.BaseDirectory, "Prepare-Usb.ps1") + "\"";
-        using var process = Process.Start(info) ?? throw new IOException("No se inició la configuración USB.");
+        using var process = Process.Start(info) ?? throw new IOException("USB setup did not start.");
         await process.WaitForExitAsync();
-        if (process.ExitCode != 0) throw new IOException("No se pudo preparar el adaptador de las gafas. Consulta el tutorial.");
+        if (process.ExitCode != 0) throw new IOException("Could not set up the goggles adapter. See the tutorial.");
     }
 }

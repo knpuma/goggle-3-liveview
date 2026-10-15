@@ -45,8 +45,8 @@ public partial class MainWindow : Window
             ConnectButton.Focus();
         };
         var diagnosticMenu = new System.Windows.Controls.ContextMenu();
-        var item = new System.Windows.Controls.MenuItem { Header = "Diagnóstico" };
-        item.Click += (_,_) => MessageBox.Show(this, string.Join(Environment.NewLine, log), "Diagnóstico USB");
+        var item = new System.Windows.Controls.MenuItem { Header = "Diagnostics" };
+        item.Click += (_,_) => MessageBox.Show(this, string.Join(Environment.NewLine, log), "USB diagnostics");
         diagnosticMenu.Items.Add(item); Hud.ContextMenu = diagnosticMenu;
     }
 
@@ -57,18 +57,18 @@ public partial class MainWindow : Window
         try
         {
             if (session != null) { await DisconnectAsync(); return; }
-            Status.Text = "Abriendo conexión con las gafas…";
+            Status.Text = "Connecting to the goggles…";
             var address = await AdapterLocator.FindAsync();
             if (closing) return;
             if (address == null)
             {
-                if (MessageBox.Show(this, "La conexión USB necesita preparar el adaptador RNDIS de las Goggles 3. Se añadirá 192.168.60.1/24 solo a ese adaptador; no se cambiarán Wi-Fi, Ethernet, DNS ni la puerta de enlace. Windows pedirá permiso de administrador. ¿Prepararlo ahora?",
-                    "Preparar conexión USB", MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes)
-                { Status.Text = "Conexión cancelada"; return; }
+                if (MessageBox.Show(this, "The Goggles 3 RNDIS adapter needs to be configured. The address 192.168.60.1/24 will be added only to that adapter. Wi-Fi, Ethernet, DNS and your default gateway will not be changed. Windows will ask for administrator permission. Set it up now?",
+                    "Set up USB connection", MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes)
+                { Status.Text = "Connection cancelled"; return; }
                 await AdapterLocator.PrepareAsync();
                 address = await AdapterLocator.FindAsync();
                 if (closing) return;
-                if (address == null) throw new IOException("No se detecta el adaptador RNDIS de las Goggles 3. Consulta Tutorial.");
+                if (address == null) throw new IOException("Goggles 3 RNDIS adapter not found. Open the tutorial for help.");
             }
             replay = false;
             var active = CreateSession(); active.Start(new UdpVideoReceiver(address));
@@ -81,7 +81,7 @@ public partial class MainWindow : Window
 
     private FfmpegVideoSession CreateSession()
     {
-        if (!File.Exists(DecoderPath)) throw new FileNotFoundException("Falta el decodificador. Extrae todo el ZIP, no solo Goggle 3 LiveView.exe.");
+        if (!File.Exists(DecoderPath)) throw new FileNotFoundException("Decoder missing. Extract the entire ZIP, not just Goggle 3 LiveView.exe.");
         long token = ++generation;
         var active = new FfmpegVideoSession(DecoderPath); session = active;
         frames = 0; rate = 0; lastFrame = clock.Elapsed.TotalSeconds;
@@ -96,7 +96,7 @@ public partial class MainWindow : Window
                     bitmap.WritePixels(new Int32Rect(0,0,1920,1080), pixels,1920*4,0);
                     Video.Source = bitmap; Idle.Visibility = Visibility.Collapsed;
                     frames++; lastFrame = clock.Elapsed.TotalSeconds;
-                    Status.Text = replay ? "Prueba local · captura grabada, no USB en directo" : "En directo · imagen recibida por USB";
+                    Status.Text = replay ? "Local test · recorded footage, not live USB" : "Live · video received over USB";
                     StatusDot.Fill = (Brush)FindResource("Mint");
                     RecordButton.IsEnabled = !saving;
                 }
@@ -113,16 +113,16 @@ public partial class MainWindow : Window
         active.RecordingEnded += result => Dispatcher.BeginInvoke(new Action(() =>
         {
             if (result.Path != currentRecordingPath) return;
-            recording = false; saving = false; RecordLabel.Text = "Grabar"; RecordDot.Fill = Brushes.White;
+            recording = false; saving = false; RecordLabel.Text = "Record"; RecordDot.Fill = Brushes.White;
             RecordingNotice.Visibility = Visibility.Visible;
             RecordingText.Foreground = Brushes.LightGray;
-            RecordingText.Text = result.Error ?? $"Guardado en Vídeos/Goggle 3 LiveView: {Path.GetFileName(result.Path)}" +
-                (result.Dropped > 0 ? $" · {result.Dropped} fotogramas omitidos por carga" : "");
+            RecordingText.Text = result.Error ?? $"Saved to Videos/Goggle 3 LiveView: {Path.GetFileName(result.Path)}" +
+                (result.Dropped > 0 ? $" · {result.Dropped} frames dropped under load" : "");
             RecordButton.IsEnabled = session != null && Video.Source != null;
         }));
-        ConnectLabel.Text = "Desconectar";
+        ConnectLabel.Text = "Disconnect";
         ConnectGlyph.Data = Geometry.Parse("M 0,0 L 12,0 L 12,12 L 0,12 Z");
-        IdleTitle.Text = "Esperando imagen"; IdleHint.Text = "Comprueba LiveView y los ajustes de las gafas.";
+        IdleTitle.Text = "Waiting for video"; IdleHint.Text = "Check LiveView and your goggles settings.";
         return active;
     }
 
@@ -135,12 +135,12 @@ public partial class MainWindow : Window
     private async Task DisconnectAsync()
     {
         generation++; FfmpegVideoSession? active = session; session = null;
-        if (recording) { recording = false; saving = true; RecordLabel.Text = "Guardando…"; }
+        if (recording) { recording = false; saving = true; RecordLabel.Text = "Saving…"; }
         if (active != null) await active.DisposeAsync();
         Video.Source = null; Idle.Visibility = Visibility.Visible;
-        Status.Text = "Desconectado"; StatusDot.Fill = new SolidColorBrush(Color.FromArgb(96,255,255,255));
-        ConnectLabel.Text = "Conectar"; ConnectGlyph.Data = Geometry.Parse("M 7,0 L 0,8 L 5,8 L 3,15 L 11,6 L 6,6 Z");
-        IdleTitle.Text = "Tu visión, en una pantalla más grande"; IdleHint.Text = "Conecta las Goggles 3 por USB-C y pulsa Conectar.";
+        Status.Text = "Disconnected"; StatusDot.Fill = new SolidColorBrush(Color.FromArgb(96,255,255,255));
+        ConnectLabel.Text = "Connect"; ConnectGlyph.Data = Geometry.Parse("M 7,0 L 0,8 L 5,8 L 3,15 L 11,6 L 6,6 Z");
+        IdleTitle.Text = "Your view, on a bigger screen"; IdleHint.Text = "Connect your Goggles 3 via USB-C and click Connect.";
         RecordButton.IsEnabled = false; Fps.Text = Resolution.Text = Bitrate.Text = "—";
         frames = 0; rate = 0;
     }
@@ -150,7 +150,7 @@ public partial class MainWindow : Window
         if (session == null) return;
         if (clock.Elapsed.TotalSeconds - lastFrame > 3)
         {
-            Status.Text = "Esperando imagen · comprueba LiveView en las gafas";
+            Status.Text = "Waiting for video · check LiveView on the goggles";
             Video.Source = null; Idle.Visibility = Visibility.Visible;
             RecordButton.IsEnabled = false; Fps.Text = Resolution.Text = Bitrate.Text = "—";
             StatusDot.Fill = Brushes.Gray;
@@ -172,7 +172,7 @@ public partial class MainWindow : Window
             if (recording)
             {
                 recording = false; saving = true; RecordButton.IsEnabled = false;
-                RecordLabel.Text = "Guardando…"; await active.StopRecordingAsync();
+                RecordLabel.Text = "Saving…"; await active.StopRecordingAsync();
             }
             else
             {
@@ -180,8 +180,8 @@ public partial class MainWindow : Window
                 Directory.CreateDirectory(directory);
                 string path = Path.Combine(directory,$"Goggle3LiveView_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{Guid.NewGuid().ToString()[..4]}.mp4");
                 currentRecordingPath = path; active.StartRecording(path); recording = true;
-                RecordLabel.Text = "Detener"; RecordDot.Fill = Brushes.Tomato;
-                RecordingText.Foreground = Brushes.Tomato; RecordingText.Text = "Grabando · " + Path.GetFileName(path);
+                RecordLabel.Text = "Stop"; RecordDot.Fill = Brushes.Tomato;
+                RecordingText.Foreground = Brushes.Tomato; RecordingText.Text = "Recording · " + Path.GetFileName(path);
                 RecordingNotice.Visibility = Visibility.Visible;
             }
         }

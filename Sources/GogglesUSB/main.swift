@@ -9,31 +9,31 @@ if CommandLine.arguments.dropFirst().contains("--json") {
     do {
         print(String(decoding: try encoder.encode(devices), as: UTF8.self))
     } catch {
-        fputs("No se pudo generar el informe JSON: \(error.localizedDescription)\n", stderr)
+        fputs("Could not generate JSON report: \(error.localizedDescription)\n", stderr)
         exit(1)
     }
 } else if devices.isEmpty {
-    print("No se han detectado dispositivos USB externos publicados por IOKit.")
-    print("Conecta y enciende las Goggles 3; activa su conexión OTG por cable y ejecuta de nuevo este diagnóstico.")
+    print("No external USB devices detected by IOKit.")
+    print("Connect and power on the Goggles 3, enable OTG Wired Connection and run this diagnostic again.")
 } else {
     for device in devices {
-        print(device.displayName.isEmpty ? "Dispositivo USB sin nombre" : device.displayName)
+        print(device.displayName.isEmpty ? "Unnamed USB device" : device.displayName)
         print("  Vendor ID: \(hex(device.vendorID))  Product ID: \(hex(device.productID))  Location ID: \(hex(device.locationID))")
         if device.hasSerialNumber {
-            print("  Número de serie: [oculto; detectado]")
+            print("  Serial number: [hidden; detected]")
         }
         if device.interfaces.isEmpty {
-            print("  Interfaces USB: no publicadas por IOKit")
+            print("  USB interfaces: not published by IOKit")
         } else {
             for interface in device.interfaces {
                 let name = interface.name.map { " [\($0)]" } ?? ""
-                print("  Interfaz \(interface.number.map(String.init) ?? "?")\(name): \(interface.purpose)")
-                print("    clase \(hex(interface.interfaceClass)), subclase \(hex(interface.interfaceSubClass)), protocolo \(hex(interface.interfaceProtocol)), endpoints \(interface.endpointCount.map(String.init) ?? "?")")
+                print("  Interface \(interface.number.map(String.init) ?? "?")\(name): \(interface.purpose)")
+                print("    class \(hex(interface.interfaceClass)), subclass \(hex(interface.interfaceSubClass)), protocol \(hex(interface.interfaceProtocol)), endpoints \(interface.endpointCount.map(String.init) ?? "?")")
             }
         }
     }
 }
 
 private func hex(_ value: Int?) -> String {
-    value.map { String(format: "0x%04X", $0) } ?? "desconocido"
+    value.map { String(format: "0x%04X", $0) } ?? "unknown"
 }

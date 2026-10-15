@@ -43,7 +43,7 @@ public sealed class UdpVideoReceiver
             try { datagram = await udp.ReceiveAsync(deadline.Token).ConfigureAwait(false); }
             catch (OperationCanceledException) when (!token.IsCancellationRequested) { continue; }
             PacketResult result = protocol.Accept(datagram.Buffer);
-            if (result.HandshakeConfirmed) Log?.Invoke("Sesión LiveView confirmada.");
+            if (result.HandshakeConfirmed) Log?.Invoke("LiveView session confirmed.");
             if (result.Acknowledgement != null)
                 await udp.SendAsync(result.Acknowledgement, token).ConfigureAwait(false);
             if (result.Video != null)

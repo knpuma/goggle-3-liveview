@@ -9,7 +9,7 @@ if pgrep -x Goggles3Multi >/dev/null; then
   echo 'Cierra Goggle 3 LiveView Multi antes de reconstruir para finalizar sus grabaciones.' >&2
   exit 1
 fi
-swift build -c release
+swift build -c release -Xswiftc -file-prefix-map -Xswiftc "$project_root=/src" -Xcc "-ffile-prefix-map=$project_root=/src"
 mkdir -p "$project_root/work" "$project_root/dist"
 build_dir="$(mktemp -d "$project_root/work/package.XXXXXX")"
 app="$build_dir/Goggle 3 LiveView Multi.app"
@@ -20,6 +20,7 @@ cp third_party/ffmpeg/ffmpeg "$app/Contents/MacOS/g3-decoder"
 cp AppInfo.plist "$app/Contents/Info.plist"
 cp assets/AppIcon.icns "$app/Contents/Resources/"
 cp LICENSE THIRD_PARTY_NOTICES.md third_party/ffmpeg/COPYING.LGPLv2.1 "$app/Contents/Resources/Licenses/"
+strip -S "$app/Contents/MacOS/Goggles3Multi" "$app/Contents/MacOS/goggles-multi-usb"
 codesign --force --sign - "$app/Contents/MacOS/goggles-multi-usb"
 codesign --force --sign - "$app/Contents/MacOS/g3-decoder"
 codesign --force --sign - "$app"

@@ -25,13 +25,13 @@ final class ViewerModel: ObservableObject {
     func start() {
         stop()
         let token = generation
-        running = true; status = "Abriendo conexión con las gafas…"; log = ""; image = nil
+        running = true; status = "Connecting to the goggles…"; log = ""; image = nil
         frames = 0; lastStats = Date(); lastFrameTime = Date()
         watchdog = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             Task { @MainActor in
                 guard let self, self.generation == token, self.running else { return }
                 if Date().timeIntervalSince(self.lastFrameTime) > 3 {
-                    self.status = "Esperando imagen · comprueba LiveView en las gafas"
+                    self.status = "Waiting for video · check LiveView on the goggles"
                     self.image = nil; self.fps = 0; self.bitrate = 0
                 }
             }
@@ -43,7 +43,7 @@ final class ViewerModel: ObservableObject {
             Task { @MainActor in
                 defer { delivery.release() }
                 guard let self, self.generation == token else { return }
-                self.image = frame; self.status = "En directo · imagen recibida por USB"; self.lastFrameTime = Date()
+                self.image = frame; self.status = "Live · video received over USB"; self.lastFrameTime = Date()
                 self.frames += 1
                 let elapsed = Date().timeIntervalSince(self.lastStats)
                 if elapsed >= 1 {
@@ -77,7 +77,7 @@ final class ViewerModel: ObservableObject {
             Task { @MainActor in
                 guard let self, self.recordingURL == url else { return }
                 self.recording = false; self.finalizingRecording = false
-                self.recordingMessage = error ?? "Guardado en Películas/Goggle 3 LiveView: \(url.lastPathComponent)"
+                self.recordingMessage = error ?? "Saved to Movies/Goggle 3 LiveView: \(url.lastPathComponent)"
             }
         }
         stream = session
@@ -88,15 +88,15 @@ final class ViewerModel: ObservableObject {
     func stop() {
         generation = UUID()
         watchdog?.invalidate(); watchdog = nil
-        if recording { recording = false; finalizingRecording = true; recordingMessage = "Finalizando el archivo MP4…" }
+        if recording { recording = false; finalizingRecording = true; recordingMessage = "Finalizing the MP4 file…" }
         stream?.stop(); stream = nil; running = false; image = nil; metrics = ""
-        status = "Desconectado"; fps = 0; bitrate = 0
+        status = "Disconnected"; fps = 0; bitrate = 0
     }
 
     func toggleRecording() {
         guard let stream, !finalizingRecording else { return }
         if recording {
-            recording = false; finalizingRecording = true; recordingMessage = "Finalizando el archivo MP4…"
+            recording = false; finalizingRecording = true; recordingMessage = "Finalizing the MP4 file…"
             stream.stopRecording()
         } else {
             do {
@@ -107,7 +107,7 @@ final class ViewerModel: ObservableObject {
                 let url = movies.appendingPathComponent("Goggle3LiveView_\(stamp.string(from: Date()))_\(UUID().uuidString.prefix(4)).mp4")
                 try stream.startRecording(to: url)
                 recordingURL = url
-                recording = true; recordingMessage = "Grabando · \(url.lastPathComponent)"
+                recording = true; recordingMessage = "Recording · \(url.lastPathComponent)"
             } catch { recordingMessage = error.localizedDescription }
         }
     }
@@ -154,7 +154,7 @@ final class USBVideoStream: @unchecked Sendable {
         let root = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         let path = name == "g3-decoder" ? root.appendingPathComponent("third_party/ffmpeg/ffmpeg") : root.appendingPathComponent(".build/debug/" + name)
         guard FileManager.default.isExecutableFile(atPath: path.path) else {
-            throw NSError(domain: "Goggles3Mac", code: 1, userInfo: [NSLocalizedDescriptionKey: "Falta el receptor o el decodificador. Reconstruye la aplicación con scripts/make-app.sh."])
+            throw NSError(domain: "Goggles3Mac", code: 1, userInfo: [NSLocalizedDescriptionKey: "The receiver or decoder is missing. Reinstall the complete application."])
         }
         return path
     }
@@ -241,7 +241,7 @@ final class USBVideoStream: @unchecked Sendable {
         }
         lock.lock(); let deliberate = stopping; lock.unlock()
         stop()
-        if !deliberate { onEnd?("La conexión se ha cerrado. Revisa el cable y Compartir LiveView.") }
+        if !deliberate { onEnd?("Connection closed. Check the cable and LiveView sharing.") }
     }
 
     func stop() {
@@ -316,7 +316,7 @@ private final class VideoRecorder: @unchecked Sendable {
             process.waitUntilExit()
             errors.fileHandleForReading.readabilityHandler = nil
             lock.lock(); let skipped = dropped; lock.unlock()
-            let error = process.terminationStatus == 0 ? (skipped > 0 ? "MP4 guardado con \(skipped) fotogramas omitidos por carga del Mac: \(url.lastPathComponent)" : nil) : "La grabación no pudo finalizar correctamente: \(url.lastPathComponent)"
+            let error = process.terminationStatus == 0 ? (skipped > 0 ? "MP4 saved with \(skipped) frames dropped due to Mac load: \(url.lastPathComponent)" : nil) : "Recording could not finish correctly: \(url.lastPathComponent)"
             onEnd?(url, error)
         }
     }

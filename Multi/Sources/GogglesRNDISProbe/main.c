@@ -127,10 +127,10 @@ static const char *directionName(UInt8 direction) {
 static const char *transferName(UInt8 type) {
     switch (type) {
         case kUSBControl: return "control";
-        case kUSBIsoc: return "isocrono";
+        case kUSBIsoc: return "isochronous";
         case kUSBBulk: return "bulk";
-        case kUSBInterrupt: return "interrupción";
-        default: return "desconocido";
+        case kUSBInterrupt: return "interrupt";
+        default: return "unknown";
     }
 }
 
@@ -173,7 +173,7 @@ static int probeRNDISInitialization(IOUSBInterfaceInterface300 **interface, int 
 
     IOReturn status = sendEncapsulatedCommand(interface, initialize, sizeof(initialize));
     if (status != kIOReturnSuccess) {
-        fprintf(stderr, "RNDIS INITIALIZE no fue aceptado (0x%08x).\n", status);
+        fprintf(stderr, "RNDIS INITIALIZE was not accepted (0x%08x).\n", status);
         return 1;
     }
 
@@ -182,11 +182,11 @@ static int probeRNDISInitialization(IOUSBInterfaceInterface300 **interface, int 
     UInt16 responseLength = 0;
     status = getEncapsulatedResponse(interface, response, sizeof(response), &responseLength);
     if (status != kIOReturnSuccess) {
-        fprintf(stderr, "No llegó respuesta RNDIS INITIALIZE (0x%08x).\n", status);
+        fprintf(stderr, "No RNDIS INITIALIZE response received (0x%08x).\n", status);
         return 1;
     }
     if (responseLength < 16 || readLE32(response) != kRNDISInitializeComplete) {
-        fprintf(stderr, "Respuesta RNDIS inesperada (%u bytes).\n", responseLength);
+        fprintf(stderr, "Unexpected RNDIS response (%u bytes).\n", responseLength);
         return 1;
     }
 
@@ -194,10 +194,10 @@ static int probeRNDISInitialization(IOUSBInterfaceInterface300 **interface, int 
     const uint32_t requestID = readLE32(response + 8);
     const uint32_t statusCode = readLE32(response + 12);
     if (requestID != 1 || messageLength > responseLength || statusCode != 0) {
-        fprintf(stderr, "RNDIS INITIALIZE respondió con estado 0x%08x.\n", statusCode);
+        fprintf(stderr, "RNDIS INITIALIZE returned status 0x%08x.\n", statusCode);
         return 1;
     }
-    printf("RNDIS INITIALIZE confirmado: respuesta estándar de %u bytes.\n", responseLength);
+    printf("RNDIS INITIALIZE confirmed: standard response of %u bytes.\n", responseLength);
 
     if (!endSession) {
         return 0;
@@ -210,10 +210,10 @@ static int probeRNDISInitialization(IOUSBInterfaceInterface300 **interface, int 
     writeLE32(halt + 8, 2);
     status = sendEncapsulatedCommand(interface, halt, sizeof(halt));
     if (status != kIOReturnSuccess) {
-        fprintf(stderr, "RNDIS HALT no fue aceptado (0x%08x).\n", status);
+        fprintf(stderr, "RNDIS HALT was not accepted (0x%08x).\n", status);
         return 1;
     }
-    printf("Sesión RNDIS cerrada sin enviar paquetes de vídeo o red.\n");
+    printf("RNDIS session closed without sending video or network packets.\n");
     return 0;
 }
 
@@ -236,7 +236,7 @@ static int setRNDISPacketFilter(IOUSBInterfaceInterface300 **interface) {
 
     IOReturn status = sendEncapsulatedCommand(interface, request, sizeof(request));
     if (status != kIOReturnSuccess) {
-        fprintf(stderr, "RNDIS SET(packet filter) no fue aceptado (0x%08x).\n", status);
+        fprintf(stderr, "RNDIS SET(packet filter) was not accepted (0x%08x).\n", status);
         return 1;
     }
     usleep(20 * 1000);
@@ -245,7 +245,7 @@ static int setRNDISPacketFilter(IOUSBInterfaceInterface300 **interface) {
     status = getEncapsulatedResponse(interface, response, sizeof(response), &responseLength);
     if (status != kIOReturnSuccess || responseLength < 16 || readLE32(response) != kRNDISSetComplete ||
         readLE32(response + 8) != 2 || readLE32(response + 12) != 0) {
-        fprintf(stderr, "RNDIS SET(packet filter) no confirmó la escucha.\n");
+        fprintf(stderr, "RNDIS SET(packet filter) did not confirm listening.\n");
         return 1;
     }
     return 0;
@@ -260,7 +260,7 @@ static int queryRNDISMAC(IOUSBInterfaceInterface300 **interface, UInt8 mac[6]) {
 
     IOReturn status = sendEncapsulatedCommand(interface, request, sizeof(request));
     if (status != kIOReturnSuccess) {
-        fprintf(stderr, "RNDIS QUERY(mac) no fue aceptado (0x%08x).\n", status);
+        fprintf(stderr, "RNDIS QUERY(mac) was not accepted (0x%08x).\n", status);
         return 1;
     }
     usleep(20 * 1000);
@@ -269,12 +269,12 @@ static int queryRNDISMAC(IOUSBInterfaceInterface300 **interface, UInt8 mac[6]) {
     status = getEncapsulatedResponse(interface, response, sizeof(response), &responseLength);
     if (status != kIOReturnSuccess || responseLength < 30 || readLE32(response) != kRNDISQueryComplete ||
         readLE32(response + 8) != 3 || readLE32(response + 12) != 0 || readLE32(response + 16) != 6) {
-        fprintf(stderr, "RNDIS QUERY(mac) no confirmó una dirección Ethernet.\n");
+        fprintf(stderr, "RNDIS QUERY(mac) did not confirm an Ethernet address.\n");
         return 1;
     }
     uint32_t offset = 8 + readLE32(response + 20);
     if (offset > responseLength || 6 > responseLength - offset) {
-        fprintf(stderr, "RNDIS QUERY(mac) devolvió un offset no válido.\n");
+        fprintf(stderr, "RNDIS QUERY(mac) returned an invalid offset.\n");
         return 1;
     }
     memcpy(mac, response + offset, 6);
@@ -311,7 +311,7 @@ static int writeRNDISPacket(IOUSBInterfaceInterface300 **interface, UInt8 pipe, 
     UInt32 length = headerLength + ethernetLength;
     IOReturn status = (*interface)->WritePipeTO(interface, pipe, message, length, 500, 500);
     if (status != kIOReturnSuccess) {
-        fprintf(stderr, "No se pudo escribir una trama RNDIS (0x%08x).\n", status);
+        fprintf(stderr, "Could not write an RNDIS frame (0x%08x).\n", status);
         return 1;
     }
     return 0;
@@ -401,7 +401,7 @@ static int resolvePeerMAC(IOUSBInterfaceInterface300 **interface, UInt8 inputPip
         IOReturn status = (*interface)->ReadPipeTO(interface, inputPipe, buffer, &length, 250, 250);
         if (status == kIOReturnTimeout || status == kIOUSBTransactionTimeout) continue;
         if (status != kIOReturnSuccess) {
-            fprintf(stderr, "Lectura durante ARP: 0x%08x.\n", status);
+            fprintf(stderr, "Read during ARP: 0x%08x.\n", status);
             continue;
         }
         if (length < 44 || readLE32(buffer) != 1) continue;
@@ -412,10 +412,10 @@ static int resolvePeerMAC(IOUSBInterfaceInterface300 **interface, UInt8 inputPip
         if (frame[12] != 8 || frame[13] != 6 || memcmp(frame + 28, kGogglesIP, 4)) continue;
         memcpy(peerMAC, frame + 22, 6);
         if (frame[21] == 1) sendARPReply(interface, outputPipe, peerMAC);
-        printf("ARP confirmado: las gafas respondieron desde 192.168.60.2.\n");
+        printf("ARP confirmed: goggles responded from 192.168.60.2.\n");
         return 0;
     }
-    fprintf(stderr, "Sin respuesta ARP de 192.168.60.2; no se enviará una suscripción a una dirección Ethernet supuesta.\n");
+    fprintf(stderr, "No ARP response from 192.168.60.2; no subscription will be sent to a guessed Ethernet address.\n");
     return 1;
 }
 
@@ -424,7 +424,7 @@ static int liveProbe(
 ) {
     UInt8 gogglesMAC[6] = {0};
     if (setRNDISPacketFilter(interface) != 0 || queryRNDISMAC(interface, kHostMAC) != 0) return 1;
-    printf("RNDIS activo; resolviendo la dirección Ethernet remota mediante ARP.\n");
+    printf("RNDIS active; resolving the remote Ethernet address via ARP.\n");
     if (resolvePeerMAC(interface, inputPipe, outputPipe, gogglesMAC)) return 1;
 
     UInt8 handshake[] = {
@@ -446,7 +446,7 @@ static int liveProbe(
     if (sendARPReply(interface, outputPipe, gogglesMAC) != 0) return 1;
     usleep(20 * 1000);
     if (sendIPv4UDP(interface, outputPipe, gogglesMAC, 12346, 9003, handshake, sizeof(handshake)) != 0) return 1;
-    printf("Suscripción UDP LiveView enviada; %s.\n", streamForever ? "recepción continua" : "escuchando seis segundos");
+    printf("LiveView UDP subscription sent; %s.\n", streamForever ? "continuous reception" : "listening for six seconds");
 
     UInt8 session[2] = {handshake[2], handshake[3]};
     VideoUnit *units = calloc(kAssemblySlots, sizeof(VideoUnit));
@@ -468,7 +468,7 @@ static int liveProbe(
             continue;
         }
         if (status != kIOReturnSuccess) {
-            fprintf(stderr, "La lectura USB terminó (0x%08x).\n", status);
+            fprintf(stderr, "USB read ended (0x%08x).\n", status);
             break;
         }
         if (length < 44 || readLE32(buffer) != 1) continue;
@@ -500,7 +500,7 @@ static int liveProbe(
             message[2] != handshake[2] || message[3] != handshake[3] || message[7] != xorHeader(message)) continue;
         packets++;
         session[0] = message[2]; session[1] = message[3];
-        if (message[6] == 0) printf("  confirmación UDP recibida.\n");
+        if (message[6] == 0) printf("  UDP acknowledgement received.\n");
         if (message[6] != 2 || messageLength < 20) continue;
         videoPackets++;
         videoBytes += messageLength - 20;
@@ -527,7 +527,7 @@ static int liveProbe(
             sendIPv4UDP(interface, outputPipe, gogglesMAC, 12346, 9003, ack, sizeof(ack));
         }
     }
-    printf("LiveView: %d paquete(s) UDP, %d de vídeo, %zu bytes H.264.\n", packets, videoPackets, videoBytes);
+    printf("LiveView: %d UDP packet(s), %d video, %zu bytes H.264.\n", packets, videoPackets, videoBytes);
     for (int i = 0; i < kAssemblySlots; i++) clearUnit(&units[i]);
     free(units);
     return videoPackets > 0 ? 0 : 3;
@@ -535,26 +535,26 @@ static int liveProbe(
 
 static void printFrameSummary(const UInt8 *buffer, UInt32 length) {
     if (length < 44 || readLE32(buffer) != 1) {
-        printf("  transferencia no-RNDIS de %u bytes\n", length);
+        printf("  non-RNDIS transfer of %u bytes\n", length);
         return;
     }
     const uint32_t payloadLength = readLE32(buffer + 12);
     const uint32_t payloadOffset = readLE32(buffer + 8);
     const uint32_t offset = 8 + payloadOffset;
     if (offset > length || payloadLength > length - offset || payloadLength < 14) {
-        printf("  trama RNDIS con longitud no válida (%u bytes)\n", length);
+        printf("  RNDIS frame with invalid length (%u bytes)\n", length);
         return;
     }
     const UInt8 *ethernet = buffer + offset;
     const uint16_t etherType = ((uint16_t)ethernet[12] << 8) | ethernet[13];
-    printf("  trama Ethernet: %u bytes, EtherType 0x%04x\n", payloadLength, etherType);
+    printf("  Ethernet frame: %u bytes, EtherType 0x%04x\n", payloadLength, etherType);
 }
 
 static int listenForRNDISFrames(IOUSBInterfaceInterface300 **interface, UInt8 inPipe) {
     if (setRNDISPacketFilter(interface) != 0) {
         return 1;
     }
-    printf("Escuchando RNDIS durante 5 segundos; no se envían comandos DJI ni paquetes UDP.\n");
+    printf("Listening to RNDIS for 5 seconds; no DJI commands or UDP packets are sent.\n");
     int frames = 0;
     for (int attempt = 0; attempt < 20; attempt++) {
         UInt8 buffer[16384] = {0};
@@ -564,11 +564,11 @@ static int listenForRNDISFrames(IOUSBInterfaceInterface300 **interface, UInt8 in
             frames++;
             printFrameSummary(buffer, length);
         } else if (status != kIOReturnTimeout && status != kIOUSBTransactionTimeout) {
-            fprintf(stderr, "  lectura RNDIS terminó con 0x%08x.\n", status);
+            fprintf(stderr, "  RNDIS read ended with 0x%08x.\n", status);
             break;
         }
     }
-    printf("Escucha finalizada: %d trama(s) recibida(s).\n", frames);
+    printf("Listening finished: %d frame(s) received.\n", frames);
     return 0;
 }
 
@@ -597,17 +597,17 @@ int main(int argc, const char *argv[]) {
     if (streamForever) videoOutput = stdout;
     if (capture) {
         videoOutput = fopen(argv[2], "wb");
-        if (!videoOutput) { perror("No se pudo crear la captura H.264"); return 1; }
+        if (!videoOutput) { perror("Could not create the H.264 capture"); return 1; }
     }
     if (argc > 1 && !initialize && !listen && !live) {
-        fprintf(stderr, "Uso: goggles-rndis-probe [--initialize|--listen|--live-probe|--stream|--capture archivo.h264]\n");
+        fprintf(stderr, "Usage: goggles-rndis-probe [--initialize|--listen|--live-probe|--stream|--capture file.h264]\n");
         return 2;
     }
     CFMutableDictionaryRef matching = IOServiceMatching("IOUSBHostInterface");
     io_iterator_t iterator = IO_OBJECT_NULL;
     kern_return_t result = IOServiceGetMatchingServices(kIOMainPortDefault, matching, &iterator);
     if (result != KERN_SUCCESS) {
-        fprintf(stderr, "No se pudo enumerar interfaces USB (0x%08x).\n", result);
+        fprintf(stderr, "Could not enumerate USB interfaces (0x%08x).\n", result);
         return 1;
     }
 
@@ -634,7 +634,7 @@ int main(int argc, const char *argv[]) {
             &score
         );
         if (status != kIOReturnSuccess || plugin == NULL) {
-            fprintf(stderr, "No se pudo crear el cliente IOKit de la interfaz RNDIS (0x%08x).\n", status);
+            fprintf(stderr, "Could not create the IOKit client for the RNDIS interface (0x%08x).\n", status);
             IOObjectRelease(service);
             IOObjectRelease(iterator);
             return 1;
@@ -648,7 +648,7 @@ int main(int argc, const char *argv[]) {
         );
         (*plugin)->Release(plugin);
         if (queryStatus || interface == NULL) {
-            fprintf(stderr, "No se pudo obtener la interfaz USB de usuario (0x%08x).\n", (unsigned int)queryStatus);
+            fprintf(stderr, "Could not obtain the user USB interface (0x%08x).\n", (unsigned int)queryStatus);
             IOObjectRelease(service);
             IOObjectRelease(iterator);
             return 1;
@@ -656,7 +656,7 @@ int main(int argc, const char *argv[]) {
 
         status = (*interface)->USBInterfaceOpen(interface);
         if (status != kIOReturnSuccess) {
-            fprintf(stderr, "La interfaz RNDIS está ocupada o no puede abrirse (0x%08x). Cierra otras aplicaciones que usen las gafas.\n", status);
+            fprintf(stderr, "The RNDIS interface is busy or cannot be opened (0x%08x). Close other apps using the goggles.\n", status);
             (*interface)->Release(interface);
             IOObjectRelease(service);
             IOObjectRelease(iterator);
@@ -666,10 +666,10 @@ int main(int argc, const char *argv[]) {
         UInt8 endpointCount = 0;
         status = (*interface)->GetNumEndpoints(interface, &endpointCount);
         if (status != kIOReturnSuccess) {
-            fprintf(stderr, "No se pudo leer el número de endpoints (0x%08x).\n", status);
+            fprintf(stderr, "Could not read the endpoint count (0x%08x).\n", status);
         } else {
-            printf("DJI Goggles 3 — interfaz 1 RNDIS abierta.\n");
-            printf("Endpoints publicados: %u\n", endpointCount);
+            printf("DJI Goggles 3 — RNDIS interface 1 opened.\n");
+            printf("Published endpoints: %u\n", endpointCount);
             for (UInt8 pipe = 1; pipe <= endpointCount; pipe++) {
                 UInt8 direction = 0, endpoint = 0, transferType = 0, interval = 0;
                 UInt16 maxPacketSize = 0;
@@ -677,10 +677,10 @@ int main(int argc, const char *argv[]) {
                     interface, pipe, &direction, &endpoint, &transferType, &maxPacketSize, &interval
                 );
                 if (status == kIOReturnSuccess) {
-                    printf("  Pipe %u: %s endpoint %u, %s, paquete máximo %u bytes\n",
+                    printf("  Pipe %u: %s endpoint %u, %s, maximum packet %u bytes\n",
                         pipe, directionName(direction), endpoint, transferName(transferType), maxPacketSize);
                 } else {
-                    fprintf(stderr, "  Pipe %u: no disponible (0x%08x).\n", pipe, status);
+                    fprintf(stderr, "  Pipe %u: unavailable (0x%08x).\n", pipe, status);
                 }
             }
         }
@@ -703,7 +703,7 @@ int main(int argc, const char *argv[]) {
             initializationResult = probeRNDISInitialization(interface, 1);
         } else if (status == kIOReturnSuccess && listen) {
             if (inputPipe == 0) {
-                fprintf(stderr, "No se encontró un endpoint RNDIS de entrada.\n");
+                fprintf(stderr, "No RNDIS input endpoint found.\n");
                 initializationResult = 1;
             } else if (probeRNDISInitialization(interface, 0) == 0) {
                 initializationResult = listenForRNDISFrames(interface, inputPipe);
@@ -712,7 +712,7 @@ int main(int argc, const char *argv[]) {
             }
         } else if (status == kIOReturnSuccess && live) {
             if (inputPipe == 0 || outputPipe == 0) {
-                fprintf(stderr, "No se encontraron los endpoints RNDIS necesarios.\n");
+                fprintf(stderr, "Required RNDIS endpoints not found.\n");
                 initializationResult = 1;
             } else if (probeRNDISInitialization(interface, 0) == 0) {
                 initializationResult = liveProbe(interface, inputPipe, outputPipe);
@@ -737,6 +737,6 @@ int main(int argc, const char *argv[]) {
     }
 
     IOObjectRelease(iterator);
-    fprintf(stderr, "No se encontró la interfaz 1 de las DJI Goggles 3. Comprueba OTG y el cable de datos.\n");
+    fprintf(stderr, "DJI Goggles 3 interface 1 not found. Check OTG and the USB data cable.\n");
     return 1;
 }

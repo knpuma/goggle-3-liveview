@@ -39,7 +39,7 @@ public sealed class FfmpegVideoSession : IAsyncDisposable
 
     private void Begin(Func<Stream, CancellationToken, Task> source, bool paced = false)
     {
-        if (worker != null) throw new InvalidOperationException("La sesión ya está iniciada.");
+        if (worker != null) throw new InvalidOperationException("The session is already running.");
         decoder = CreateProcess(decoderPath, ["-hide_banner","-loglevel","error","-flags2","+showall",
             "-threads","2","-probesize","65536","-analyzeduration","0","-f","h264","-r","60","-i","pipe:0",
             "-an","-pix_fmt","bgra","-vf","scale=1920:1080","-fps_mode","passthrough","-f","rawvideo","pipe:1"]);
@@ -53,7 +53,7 @@ public sealed class FfmpegVideoSession : IAsyncDisposable
             {
                 try { await source(active.StandardInput.BaseStream, lifetime.Token).ConfigureAwait(false); }
                 catch (OperationCanceledException) when (lifetime.IsCancellationRequested) { }
-                catch (Exception error) { sourceFailure = error; Log?.Invoke("Recepción USB: " + error.Message); }
+                catch (Exception error) { sourceFailure = error; Log?.Invoke("USB reception: " + error.Message); }
                 finally { active.StandardInput.Close(); }
             });
             try
@@ -80,9 +80,9 @@ public sealed class FfmpegVideoSession : IAsyncDisposable
                     Frame?.Invoke(pixels);
                 }
                 await active.WaitForExitAsync(lifetime.Token).ConfigureAwait(false);
-                if (sourceFailure != null) throw new IOException("Recepción USB: " + sourceFailure.Message, sourceFailure);
-                if (active.ExitCode != 0) throw new IOException($"El decodificador se cerró con código {active.ExitCode}.");
-                Ended?.Invoke(paced ? "Fin de la captura local de prueba." : "La conexión USB se ha cerrado.");
+                if (sourceFailure != null) throw new IOException("USB reception: " + sourceFailure.Message, sourceFailure);
+                if (active.ExitCode != 0) throw new IOException($"The decoder exited with code {active.ExitCode}.");
+                Ended?.Invoke(paced ? "End of local test recording." : "The USB connection has closed.");
             }
             catch (OperationCanceledException) when (lifetime.IsCancellationRequested) { }
             catch (Exception error) { Log?.Invoke(error.Message); Ended?.Invoke(error.Message); }
@@ -102,7 +102,7 @@ public sealed class FfmpegVideoSession : IAsyncDisposable
     {
         lock (recordingLock)
         {
-            if (recorder != null) throw new InvalidOperationException("Ya hay una grabación activa.");
+            if (recorder != null) throw new InvalidOperationException("A recording is already in progress.");
             recorder = new Mp4Recorder(decoderPath, path, frameRate, result => RecordingEnded?.Invoke(result));
         }
     }
@@ -174,7 +174,7 @@ internal sealed class Mp4Recorder
                 process.StandardInput.Close();
                 await process.WaitForExitAsync(shutdown.Token).ConfigureAwait(false);
                 if (process.ExitCode == 0 && frames > 0) failure = null;
-                else failure ??= "No se recibieron fotogramas o el codificador no pudo cerrar el MP4.";
+                else failure ??= "No frames were received or the encoder could not finalize the MP4.";
             }
             catch (Exception error)
             {

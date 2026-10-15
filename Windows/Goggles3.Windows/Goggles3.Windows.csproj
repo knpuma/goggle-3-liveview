@@ -7,7 +7,7 @@
     <AssemblyName>Goggle 3 LiveView</AssemblyName>
     <Product>Goggle 3 LiveView</Product>
     <Title>Goggle 3 LiveView</Title>
-    <Version>0.3.1</Version>
+    <Version>0.3.2</Version>
     <RuntimeFrameworkVersion>10.0.13</RuntimeFrameworkVersion>
     <ApplicationIcon>../../assets/AppIcon.ico</ApplicationIcon>
   </PropertyGroup>

@@ -5,8 +5,9 @@ project_root="${0:A:h:h}"
 app_path="$project_root/outputs/Goggle 3 LiveView.app"
 
 cd "$project_root"
-swift build -c release --product Goggles3Mac
-swift build -c release --product goggles-rndis-probe
+build_flags=(-Xswiftc -file-prefix-map -Xswiftc "$project_root=/src" -Xcc "-ffile-prefix-map=$project_root=/src")
+swift build -c release --product Goggles3Mac "${build_flags[@]}"
+swift build -c release --product goggles-rndis-probe "${build_flags[@]}"
 if [[ ! -x "$project_root/third_party/ffmpeg/ffmpeg" ]]; then
   zsh "$project_root/scripts/build-decoder.sh"
 fi
@@ -19,7 +20,8 @@ cp "third_party/ffmpeg/COPYING.LGPLv2.1" "$app_path/Contents/Resources/Licenses/
 cp "THIRD_PARTY_NOTICES.md" "LICENSE" "$app_path/Contents/Resources/Licenses/"
 cp "assets/AppIcon.icns" "$app_path/Contents/Resources/AppIcon.icns"
 cp "AppInfo.plist" "$app_path/Contents/Info.plist"
+strip -S "$app_path/Contents/MacOS/Goggle3LiveView" "$app_path/Contents/MacOS/goggles-rndis-probe"
 codesign --force --sign - "$app_path/Contents/MacOS/goggles-rndis-probe"
 codesign --force --sign - "$app_path/Contents/MacOS/g3-decoder"
 codesign --force --sign - "$app_path"
-echo "App creada: $app_path"
+echo "App created: $app_path"

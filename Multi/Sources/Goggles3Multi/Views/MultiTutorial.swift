@@ -4,20 +4,20 @@ struct MultiTutorial: View {
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Conecta tus gafas").font(.title2.bold())
-            Text("Esta app es independiente de Goggle 3 LiveView. Cierra el visor original antes de conectar: no pueden usar las mismas gafas a la vez.").foregroundStyle(.secondary)
-            Text("1. Conecta cada gafa con su propio cable USB de datos. Empieza por una y añade las demás de una en una.")
-            Text("2. En cada gafa: Configuración → Acerca de → Conexión por cable OTG.")
-            Text("3. Activa compartir la vista en directo con el dispositivo móvil por Wi-Fi desde los accesos directos (botón 5D hacia atrás). El Mac recibe por USB; no tiene que unirse a ese Wi-Fi.")
-            Text("4. Sin aeronave: mantén Grabación de la vista de cámara habilitada en Configuración → Cámara → Configuración avanzada de la cámara.")
-            Text("5. Elige un puerto USB distinto por canal, identifica a cada piloto y pulsa Conectar. Si desconectas un cable, vuelve a seleccionar el dispositivo: no se sustituye automáticamente.")
+            Text("Connect your goggles").font(.title2.bold())
+            Text("This app is separate from Goggle 3 LiveView. Close the original viewer before connecting: both apps cannot use the same goggles at the same time.").foregroundStyle(.secondary)
+            Text("1. Connect each pair of goggles with its own USB data cable. Start with one and add the others one at a time.")
+            Text("2. On each pair of goggles: Settings → About → OTG Wired Connection.")
+            Text("3. Enable liveview sharing to a mobile device via Wi-Fi in the shortcut menu (push the 5D button backward). The Mac receives video over USB; it does not need to join that Wi-Fi network.")
+            Text("4. Without an aircraft: keep Camera View Recording enabled under Settings → Camera → Advanced Camera Settings.")
+            Text("5. Choose a different USB port for each channel, name each pilot and click Connect. After unplugging a cable, select the device again; it is not replaced automatically.")
             Divider()
-            Text("Grabar en cada panel guarda ese canal. Grabar mosaico crea un único MP4 1920×1080 con las cuatro imágenes (2×2), aunque amplíes una de ellas. Ambas opciones pueden funcionar a la vez. Los vídeos se guardan en Películas/Goggle 3 LiveView Multi. Pulsa Detener y espera a Guardado. Esc sale de pantalla completa.")
-            Text("Si no llega imagen, desconecta solo ese canal, desactiva y vuelve a activar la vista en directo en esas gafas y reconecta. Utiliza siempre las gafas como pantalla principal para pilotar.")
+            Text("Record saves an individual channel. Record mosaic saves a single 1920×1080 MP4 of all four panels (2×2), even while one is fullscreen. Both can run at once. Files are saved in Movies/Goggle 3 LiveView Multi. Click Stop and wait for Saved. Press Esc to leave fullscreen.")
+            Text("If no video arrives, disconnect that channel, restart LiveView sharing on those goggles, then reconnect. Always use the goggles as your primary display when flying.")
             HStack {
-                Link("Manual oficial DJI", destination: URL(string: "https://dl.djicdn.com/downloads/DJI_Goggles_3/20240528/DJI_Goggles_3_User_Manual_ES.pdf")!)
+                Link("Official DJI manual", destination: URL(string: "https://dl.djicdn.com/downloads/DJI_Goggles_3/DJI_Goggles_3_User_Manual_EN.pdf")!)
                 Spacer()
-                Button("Entendido") { dismiss() }.keyboardShortcut(.defaultAction)
+                Button("Got it") { dismiss() }.keyboardShortcut(.defaultAction)
             }
         }.padding(28).frame(width: 700).preferredColorScheme(.dark)
     }

@@ -56,7 +56,7 @@ final class MosaicRecorder: @unchecked Sendable {
                 let x = CGFloat(index % 2) * 960, y = CGFloat(1 - index / 2) * 540
                 let visible = feed.image != nil && now - feed.updated < 3
                 if visible, let image = feed.image { context.draw(image, in: CGRect(x: x, y: y, width: 960, height: 540)) }
-                let label = "CANAL \(index + 1) · \(visible ? (feed.demo ? "DEMO · NO ES USB" : "USB") : "SIN IMAGEN")"
+                let label = "CHANNEL \(index + 1) · \(visible ? (feed.demo ? "DEMO · NOT USB" : "USB") : "SIN IMAGEN")"
                 context.setFillColor(CGColor(gray: 0, alpha: 0.75)); context.fill(CGRect(x: x, y: y + 506, width: 960, height: 34))
                 let text = NSAttributedString(string: label, attributes: [
                     NSAttributedString.Key(kCTFontAttributeName as String): CTFontCreateWithName("Helvetica" as CFString, 18, nil),

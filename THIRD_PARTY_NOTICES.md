@@ -1,32 +1,29 @@
-# Componentes de terceros
+# Third-party notices
 
 ## FFmpeg 8.0.3
 
 Copyright (c) 2000–2026 the FFmpeg developers.
 
-Goggle 3 LiveView ejecuta una compilación propia y separada de FFmpeg, sin código GPL ni no libre. Licencia: **GNU Lesser General Public License, versión 2.1 o posterior**. Texto en `third_party/ffmpeg/COPYING.LGPLv2.1`, también en `Goggle 3 LiveView.app/Contents/Resources/Licenses/FFmpeg-LGPL-2.1.txt`.
+Goggle 3 LiveView runs a separately built FFmpeg executable, without GPL or non-free components. License: **GNU Lesser General Public License, version 2.1 or later**. The license text is in `third_party/ffmpeg/COPYING.LGPLv2.1` and the app bundle’s Resources/Licenses directory.
 
-- Fuente original completa: <https://ffmpeg.org/releases/ffmpeg-8.0.3.tar.xz>
+- Complete original source: https://ffmpeg.org/releases/ffmpeg-8.0.3.tar.xz
 - SHA-256: `6136812ea6d4e68bdba27e33c2a94382711cdf4f8602ffef056ff792bd6f9818`
-- Construcción exacta: `scripts/build-decoder.sh`.
-- La fuente de FFmpeg no ha sido modificada. Se seleccionaron componentes mediante su configuración de compilación.
-- El ejecutable puede sustituirse por otra compilación compatible en `Goggle 3 LiveView.app/Contents/MacOS/g3-decoder`; tras sustituirlo se debe volver a firmar la app localmente. No hay restricciones de licencia que impidan modificar o depurar la aplicación para usar una versión modificada.
-- Se proporciona el archivo fuente completo de esa versión junto con los paquetes entregados. No se distribuyen las bibliotecas compartidas de Homebrew ni componentes de la aplicación propietaria de referencia.
+- Build configuration: `scripts/build-decoder.sh`.
+- FFmpeg source is unmodified; components are selected through build configuration.
+- The executable at `Goggle 3 LiveView.app/Contents/MacOS/g3-decoder` can be replaced with a compatible build; locally re-sign the app afterward. There is no license restriction against modifying or debugging this app to use a modified version.
+- The matching full FFmpeg source archive is provided with each release. No Homebrew shared libraries or proprietary reference-app components are distributed.
 
-## Versión Windows 0.3
+## Windows
 
-El ejecutable Windows de FFmpeg también se compila desde la fuente íntegra de **FFmpeg 8.0.3** indicada arriba. Se construye con `scripts/build-windows-decoder.sh` y llvm-mingw 20261006, sin bibliotecas externas, GPL ni componentes no libres. La versión Windows usa el codificador MPEG-4 nativo de FFmpeg en lugar de VideoToolbox. Las variantes x64 y ARM64 son ejecutables separados de la app, sustituibles, y llevan la licencia LGPL 2.1 o posterior. Los archivos de configuración exacta se incluyen en los scripts de construcción; las rutas del equipo de construcción no son necesarias para ejecutarlos.
+Windows FFmpeg is also built from the complete, unmodified FFmpeg 8.0.3 source above using `scripts/build-windows-decoder.sh` and llvm-mingw 20261006. It includes no external libraries, GPL or non-free components. Windows recording uses FFmpeg’s native MPEG-4 encoder instead of VideoToolbox. The replaceable x64 and ARM64 decoders are separate executables under LGPL 2.1 or later. Exact configuration is in the build script.
 
-La aplicación Windows usa **.NET 10 y WPF**, software de Microsoft y colaboradores bajo sus licencias open source. El runtime redistribuible se incorpora mediante `dotnet publish --self-contained`; sus avisos y licencias se conservan en `Licenses/DotNET-THIRD-PARTY-NOTICES.txt`, `Licenses/DotNET-LICENSE.txt` y `Licenses/WPF-LICENSE.txt` en cada paquete publicado. Fuentes del runtime: <https://github.com/dotnet/runtime>; fuentes de WPF: <https://github.com/dotnet/wpf>. Goggle 3 LiveView no vincula código propietario de DJI ni redistribuye tipografías de Apple.
+The Windows app uses **.NET 10 and WPF**, open-source software from Microsoft and contributors. The runtime is bundled through `dotnet publish --self-contained`. Notices are retained in `Licenses/DotNET-THIRD-PARTY-NOTICES.txt`, `Licenses/DotNET-LICENSE.txt` and `Licenses/WPF-LICENSE.txt`. Sources: https://github.com/dotnet/runtime and https://github.com/dotnet/wpf.
 
-Se descargaron paquetes BtbN durante la investigación de construcción Windows, pero **no se incluyen ni se usan en los paquetes entregados**. Los decodificadores distribuidos son las compilaciones mínimas propias descritas arriba.
+No proprietary DJI code or Apple fonts are redistributed. BtbN packages were investigated during development but are not included in delivered packages; the distributed decoders are the minimal builds described above.
 
-## Referencias de investigación, no incluidas como dependencias
+## Research references, not bundled dependencies
 
-<https://github.com/samuelsadok/dji_protocol/blob/master/udp_protocol.md> describe los campos del protocolo UDP para DJI anteriores. La reutilización en Goggles 3 se comprobó en el dispositivo propio; no se incorporó código de ese repositorio.
-
-<https://github.com/wllm-rbnt/third-eye> documenta Goggles 3 e identifica una ruta de red diferente de su transporte móvil. No se incorporó su código al producto.
-
-<https://github.com/planktonwhc/Goggles3-USB-Livestream> se utilizó como referencia observable para confirmar el vídeo por USB. Su software propietario no se redistribuye.
-
-<https://github.com/morluto/rea> se ejecutó localmente como servidor MCP de análisis. REA no forma parte de la app ni es una dependencia para utilizarla.
+- https://github.com/samuelsadok/dji_protocol/blob/master/udp_protocol.md describes earlier DJI UDP protocol fields. Compatibility was investigated on the developer’s own Goggles 3; no repository code was incorporated.
+- https://github.com/wllm-rbnt/third-eye documents Goggles 3 and a network path distinct from its mobile transport. Its code is not included.
+- https://github.com/planktonwhc/Goggles3-USB-Livestream was observed as a reference for USB video. Its proprietary software is not redistributed.
+- https://github.com/morluto/rea was used locally for analysis. REA is not part of this app or required to run it.
