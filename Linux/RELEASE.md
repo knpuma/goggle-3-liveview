@@ -1,8 +1,6 @@
-# Linux packages in the main Goggle 3 LiveView release
+# Goggle 3 LiveView for Linux
 
 Your DJI Goggles 3 screen on your Linux computer, over a direct USB cable. **No RC Pro. No Raspberry Pi. Free and open source.**
-
-Linux downloads are published alongside Mac and Windows in the [main viewer release](https://github.com/knpuma/goggle-3-liveview/releases/tag/v0.3.2), not as a separate product or release. Existing Mac/Windows binaries keep version 0.3.2; Linux binaries keep version 0.3.3. Multi and the Goggles 2 experiment are unaffected.
 
 **Tested only on Ubuntu 24.04 x64. Other Linux distributions have not been tested.**
 
@@ -40,7 +38,7 @@ Without a linked aircraft, keep **Camera View Recording** enabled in **Settings 
 - **Record / Stop** saves a silent MP4 locally in Videos → Goggle 3 LiveView.
 - A fullscreen icon beside Record; **F11** enters clean fullscreen and **Esc** returns.
 - USB identification and network-conflict checks. No changes to Wi-Fi, DNS, default gateways or firewall rules.
-- MIT source code and third-party notices. No demo clips, proprietary DJI code or video uploads.
+- MIT source code. Recordings stay on your computer; no video uploads.
 
 ## Linux preview and feedback
 

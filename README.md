@@ -8,14 +8,14 @@ Free, open-source USB viewers for **Mac, Windows and Linux**. Watch the goggles 
 
 [**Downloads & setup guide**](https://knpuma.github.io/goggle-3-liveview/) · [Report an issue](https://github.com/knpuma/goggle-3-liveview/issues)
 
-## Two separate applications
+## Choose your viewer
 
 | Application | What it does | Platforms |
 |---|---|---|
 | **Goggle 3 LiveView** | One pair of goggles, one feed and MP4 recording | Mac / Windows 0.3.2; Linux x64 preview 0.3.3 |
 | **Goggle 3 LiveView Multi 0.4.1 · English** | Up to four USB channels, a 2×2 mosaic, individual and global MP4 recording | Apple Silicon Mac |
 
-Multi does not replace the original viewer. Both can be installed; close one before using the same goggles in the other. Each app has its own recording folder.
+Close other viewers before connecting to the same goggles.
 
 ## Download the original viewer
 
@@ -28,7 +28,7 @@ Multi does not replace the original viewer. Both can be installed; close one bef
 | Windows 11 · ARM64 | [ZIP](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Windows-arm64-English.zip) | [ZIP](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.1/Goggle-3-LiveView-Windows-arm64.zip) |
 | Linux · Intel / AMD x64 · tested only on Ubuntu 24.04 | [DEB](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Linux-x64-0.3.3.deb) · [Portable](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Linux-x64-0.3.3.tar.gz) | Included in the same download · ES / EN switch |
 
-**Package versions:** Mac/Windows English 0.3.2; Spanish 0.3.1; Linux 0.3.3 with both languages included. All current platform downloads are grouped in the [main viewer release](https://github.com/knpuma/goggle-3-liveview/releases/tag/v0.3.2).
+**Package versions:** Mac/Windows English 0.3.2; Spanish 0.3.1; Linux 0.3.3 with both languages included.
 
 **Mac:** open the DMG and drag the app to Applications. **Windows:** extract the entire ZIP and open **Goggle 3 LiveView.exe**, keeping all other files beside it. No developer tools or separate .NET installation are needed.
 
@@ -38,7 +38,7 @@ The apps do not have a commercial signing certificate; Mac packages are not nota
 
 **[Ubuntu 24.04 · .deb installer](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Linux-x64-0.3.3.deb)** · **[Portable .tar.gz](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Linux-x64-0.3.3.tar.gz)** · [Linux setup guide](Linux/README.md) · [Guía en español](Linux/README.es.md)
 
-**Linux 0.3.3 · English and Spanish in one app. Tested only on Ubuntu 24.04 x64. Other Linux distributions have not been tested.** X11 or XWayland is required. Connect directly over USB, record MP4 locally and use clean fullscreen. The .NET runtime is included; FFmpeg comes from your distribution. This is the single-goggles viewer, not Multi or the separate Goggles 2 experiment.
+**Linux 0.3.3 · English and Spanish in one app. Tested only on Ubuntu 24.04 x64. Other Linux distributions have not been tested.** X11 or XWayland is required. Connect directly over USB, record MP4 locally and use clean fullscreen. The .NET runtime is included; FFmpeg comes from your distribution.
 
 ```sh
 sudo apt install ./Goggle-3-LiveView-Linux-x64-0.3.3.deb
@@ -46,7 +46,7 @@ sudo apt install ./Goggle-3-LiveView-Linux-x64-0.3.3.deb
 
 ![Goggle 3 LiveView running on Linux, ready for USB](docs/assets/app-linux-en.png)
 
-Linux builds, package installation, UI, protocol loopback, decoding and MP4 recording are checked automatically. Physical Goggles 3 reception on Linux still needs community feedback; report problems through [GitHub issues](https://github.com/knpuma/goggle-3-liveview/issues). Existing Mac and Windows downloads remain unchanged.
+Linux builds, package installation, UI, protocol loopback, decoding and MP4 recording are checked automatically. Physical Goggles 3 reception on Linux still needs community feedback; report problems through [GitHub issues](https://github.com/knpuma/goggle-3-liveview/issues).
 
 ## Download Multi
 

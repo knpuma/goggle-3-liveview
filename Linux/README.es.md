@@ -2,7 +2,7 @@
 
 Visor USB directo para **DJI Goggles 3**, con grabación MP4 local y pantalla completa. Sin RC Pro, Raspberry Pi ni dispositivos intermedios. Incluye inglés y español; cambia con **ES / EN**.
 
-**Linux 0.3.3 se publica junto a Mac y Windows en la publicación principal del visor. Solo se ha probado en Ubuntu 24.04 LTS x64 (Intel/AMD); no se han probado otras distribuciones Linux.** Requiere X11 o XWayland. Es el visor de unas gafas, no Multi ni la versión de pruebas para Goggles 2. No sustituye las descargas actuales para Mac o Windows. No incluye Linux ARM64 ni Wayland nativo.
+**Linux 0.3.3 · Solo se ha probado en Ubuntu 24.04 LTS x64 (Intel/AMD); no se han probado otras distribuciones Linux.** Requiere X11 o XWayland. Linux ARM64 y Wayland nativo no son compatibles.
 
 ## Instalación
 
@@ -49,4 +49,4 @@ La automatización comprueba compilación en Ubuntu 24.04, protocolo UDP con int
 
 [Notifica un fallo](https://github.com/knpuma/goggle-3-liveview/issues) indicando distribución, escritorio, firmware, mensaje y pasos. No publiques números de serie ni información privada. Usa siempre las gafas como pantalla principal durante el vuelo.
 
-Código MIT. Licencias de componentes en `Licenses/`. No se incluye FFmpeg: se utiliza el de tu distribución. No hay vídeos de demostración incluidos ni subidas de vídeo a Internet. [Compilación y detalles técnicos](README.md#build).
+Código MIT. Licencias de componentes en `Licenses/`. No se incluye FFmpeg: se utiliza el de tu distribución. Los vídeos se guardan localmente, sin subidas a Internet. [Compilación y detalles técnicos](README.md#build).

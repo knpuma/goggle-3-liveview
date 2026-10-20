@@ -2,7 +2,7 @@
 
 Direct USB viewing for **DJI Goggles 3**, with local MP4 recording and clean fullscreen. No RC Pro, Raspberry Pi or intermediate device. English and Spanish are included: use the **ES / EN** button.
 
-**Linux 0.3.3 is included in the main viewer release alongside Mac and Windows. Tested only on Ubuntu 24.04 LTS x64 (Intel/AMD); other Linux distributions have not been tested.** Requires an X11 desktop or XWayland. This is the original single-goggles viewer, not Multi or the independent Goggles 2 test app. Mac and Windows downloads are unchanged. Linux ARM64 and native Wayland are not included.
+**Linux 0.3.3 · Tested only on Ubuntu 24.04 LTS x64 (Intel/AMD); other Linux distributions have not been tested.** Requires an X11 desktop or XWayland. Linux ARM64 and native Wayland are not supported.
 
 ## Install
 
@@ -32,7 +32,6 @@ Menu names follow the [official DJI Goggles 3 manual](https://dl.djicdn.com/down
 - **Record / Stop:** saves a silent MP4 under your Videos directory → Goggle 3 LiveView. Wait for “Saved” before closing. Closing/disconnecting finalizes the recording.
 - **Fullscreen icon**, next to Record, or **F11:** fills the screen and hides controls/statistics. **Esc** returns. Aspect ratio is preserved; letterboxing is intentional.
 - **FPS:** frames decoded by this app. **1920 × 1080:** preview/recording size after scaling, not a claim about the original stream resolution. **Mb/s:** received video payload, not the aircraft radio-link bitrate.
-- No demo videos are included in the app or downloads.
 
 ## If no picture arrives
 
