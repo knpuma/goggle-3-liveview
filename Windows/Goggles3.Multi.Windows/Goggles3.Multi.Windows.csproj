@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework>
+  <UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting>
+  <AssemblyName>Goggle 3 LiveView Multi</AssemblyName><Product>Goggle 3 LiveView Multi</Product>
+  <Version>0.5.0</Version><RuntimeFrameworkVersion>10.0.13</RuntimeFrameworkVersion>
+  <ApplicationIcon>../../assets/AppIcon.ico</ApplicationIcon>
+ </PropertyGroup>
+ <ItemGroup>
+  <ProjectReference Include="../Goggles3.Multi.Core/Goggles3.Multi.Core.csproj"/>
+  <Resource Include="../../assets/AppIcon.png" Link="AppIcon.png"/>
+  <Content Include="../scripts/Prepare-MultiUsb.ps1" Link="Prepare-MultiUsb.ps1" CopyToOutputDirectory="PreserveNewest"/>
+ </ItemGroup>
+</Project>

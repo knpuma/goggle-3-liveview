@@ -13,7 +13,7 @@ Free, open-source USB viewers for **Mac, Windows and Linux**. Watch the goggles 
 | Application | What it does | Platforms |
 |---|---|---|
 | **Goggle 3 LiveView** | One pair of goggles, one feed and MP4 recording | Mac / Windows 0.3.2; Linux x64 preview 0.3.3 |
-| **Goggle 3 LiveView Multi 0.4.1 · English** | Up to four USB channels, a 2×2 mosaic, individual and global MP4 recording | Apple Silicon Mac |
+| **Goggle 3 LiveView Multi** | Up to four USB channels, a 2×2 mosaic, individual and global MP4 recording | Apple Silicon Mac / Windows x64 |
 
 Close other viewers before connecting to the same goggles.
 
@@ -52,18 +52,20 @@ Linux builds, package installation, UI, protocol loopback, decoding and MP4 reco
 
 **[Multi for Mac · English · 0.4.1](https://github.com/knpuma/goggle-3-liveview/releases/download/multi-v0.4.1/Goggle-3-LiveView-Multi-Mac-English.dmg)** · **[Español · 0.4.0](https://github.com/knpuma/goggle-3-liveview/releases/download/multi-v0.4.0/Goggle-3-LiveView-Multi-Mac.dmg)** · [Multi guide](Multi/README.md)
 
-Apple Silicon and macOS 14 or later. Multi is currently a Mac app; the original viewer is available for Mac, Windows and as a Linux preview.
+**[Multi for Windows x64 · 0.5.0 · English / Español](https://github.com/knpuma/goggle-3-liveview/releases/download/multi-v0.5.0/Goggle-3-LiveView-Multi-Windows-x64-0.5.0.zip)** · [Windows guide](Windows/Multi-README.md) · [Guía en español](Windows/Multi-LEEME.md)
+
+**Mac:** Apple Silicon, macOS 14 or later. **Windows:** Windows 11 x64 or Windows 10 22H2 x64. Extract the entire ZIP and open **Goggle 3 LiveView Multi.exe**. The runtime and encoder are included; use **ES / EN** to change language.
 
 ![Goggle 3 LiveView Multi in English](docs/assets/multi-mac-en.png)
 
 - **2×2 mosaic:** up to four named channels, with independent connection and video statistics.
 - **Individual and global recording:** save a channel or the entire mosaic, or both at once. Mosaic recording is 1920×1080 at approximately 30 fps.
 - **Clean fullscreen:** one channel or the complete mosaic. Press Esc to return.
-- **Local files:** Movies → Goggle 3 LiveView Multi. No audio or Internet uploads.
+- **Local files:** Movies → Goggle 3 LiveView Multi on Mac; Videos → Goggle 3 LiveView Multi on Windows. No audio or Internet uploads.
 
 ![Built-in English tutorial](docs/assets/multi-tutorial-en.png)
 
-**Language editions:** Mac and Windows English and Spanish downloads are separate; installing another language replaces that edition without moving recordings. Linux includes an **ES / EN** switch in the app.
+**Language editions:** Mac apps and the original Windows viewer have separate English and Spanish downloads. Multi for Windows and the Linux viewer include an **ES / EN** switch in the app.
 
 ## Connect in four steps
 

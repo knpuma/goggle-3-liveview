@@ -1,5 +1,5 @@
 name: Goggle 3 LiveView Multi issue
-description: Report a problem with the Multi app for Mac.
+description: Report a problem with the Multi app for Mac or Windows.
 title: "[Multi] "
 body:
   - type: markdown
@@ -9,14 +9,14 @@ body:
     id: version
     attributes:
       label: Multi version and language
-      placeholder: "0.4.1 (build 3), English"
+      placeholder: "Windows 0.5.0, English / Mac 0.4.1, English"
     validations:
       required: true
   - type: input
     id: mac
     attributes:
-      label: Mac model and macOS version
-      placeholder: "MacBook Air M2, macOS..."
+      label: Computer model and operating system
+      placeholder: "Intel / AMD PC, Windows 11... or MacBook Air M2, macOS..."
     validations:
       required: true
   - type: input
