@@ -40,6 +40,7 @@ public sealed class MainWindow : Window
     public MainWindow()
     {
         Title = "Goggle 3 LiveView"; Width = 1180; Height = 720; MinWidth = 880; MinHeight = 520;
+        FontFamily = new FontFamily("DejaVu Sans");
         Background = Brush.Parse("#080D10");
         try { spanish = File.ReadAllText(preferencePath).Trim() == "es"; } catch (IOException) { } catch (UnauthorizedAccessException) { }
         if (Program.Arguments.Contains("--smoke-test")) spanish = false;
@@ -67,7 +68,10 @@ public sealed class MainWindow : Window
             buttons.Children.Add(button);
         }
         connect.Background = Mint; connect.Foreground = Brush.Parse("#102421"); connect.FontWeight = FontWeight.SemiBold;
-        fullscreen.Content = "⛶"; fullscreen.FontSize = 21; fullscreen.Padding = new Thickness(12, 5);
+        fullscreen.Content = new Avalonia.Controls.Shapes.Path { Width = 18, Height = 18,
+            Data = StreamGeometry.Parse("M7,1 L1,1 L1,7 M13,1 L19,1 L19,7 M1,13 L1,19 L7,19 M13,19 L19,19 L19,13"),
+            Stroke = Brushes.White, StrokeThickness = 1.6, Stretch = Stretch.Uniform };
+        fullscreen.Padding = new Thickness(12, 10);
         bottom.Children.Add(buttons); Grid.SetColumn(stats, 2); bottom.Children.Add(stats);
         var bar = new Border { Background = Brush.Parse("#ED14272B"), BorderBrush = Brush.Parse("#324348"), BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(16), Padding = new Thickness(14), Child = bottom };
         Grid.SetRow(bar, 3); hud.Children.Add(bar); root.Children.Add(hud);
@@ -264,13 +268,23 @@ public sealed class MainWindow : Window
             spanish = false; RefreshText();
             var guide = CreateTutorial(); guide.Show(this); await Task.Delay(300);
             Capture(guide, Path.Combine(directory, "linux-tutorial.png")); guide.Close();
-            ToggleFullscreen(); await Task.Delay(300);
+            ToggleFullscreen(); await Task.Delay(800);
             if (WindowState != WindowState.FullScreen || hud.IsVisible) throw new InvalidOperationException("Fullscreen failed");
+            var screen = Screens.ScreenFromWindow(this) ?? throw new InvalidOperationException("No display found");
+            if (Math.Abs(Bounds.Width * RenderScaling - screen.Bounds.Width) > 2 || Math.Abs(Bounds.Height * RenderScaling - screen.Bounds.Height) > 2)
+                throw new InvalidOperationException("Window did not actually fill the screen");
             ToggleFullscreen(); await Task.Delay(300);
             if (!hud.IsVisible || WindowState == WindowState.FullScreen) throw new InvalidOperationException("Fullscreen restore failed");
+            var pixels = new byte[FfmpegVideoSession.FrameSize];
+            for (int p = 0; p < pixels.Length; p += 4) { pixels[p] = 30; pixels[p + 1] = 80; pixels[p + 2] = 120; pixels[p + 3] = 255; }
+            Interlocked.Exchange(ref pending, pixels); await Task.Delay(300);
+            if (video.Source == null || idle.IsVisible) throw new InvalidOperationException("Video surface did not render");
+            notice.Text = "Automated rendering check — not USB video.";
+            Capture(this, Path.Combine(directory, "rendering-check.png"));
+            await DisconnectAsync();
             await ToggleConnectionAsync();
             if (session != null || string.IsNullOrWhiteSpace(notice.Text)) throw new InvalidOperationException("Missing USB error failed");
-            File.WriteAllText(Path.Combine(directory, "ui-smoke.txt"), "PASS: English, Spanish, tutorial, fullscreen, restore, missing USB handling. No hardware video claim.\n");
+            File.WriteAllText(Path.Combine(directory, "ui-smoke.txt"), "PASS: English, Spanish, tutorial, actual fullscreen dimensions, restore, BGRA rendering, missing USB handling. No hardware video claim.\n");
             Close();
         }
         catch (Exception error) { Console.Error.WriteLine(error); Environment.Exit(1); }
