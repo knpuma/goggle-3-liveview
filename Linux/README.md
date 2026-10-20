@@ -2,11 +2,11 @@
 
 Direct USB viewing for **DJI Goggles 3**, with local MP4 recording and clean fullscreen. No RC Pro, Raspberry Pi or intermediate device. English and Spanish are included: use the **ES / EN** button.
 
-**Linux x64 preview · 0.3.3.** Target: Ubuntu 24.04 LTS on Intel/AMD, with an X11 desktop or XWayland. This is the original single-goggles viewer, not Multi or the independent Goggles 2 test app. Mac and Windows downloads are unchanged. Linux ARM64 and native Wayland are not included.
+**Linux 0.3.3 is included in the main viewer release alongside Mac and Windows. Tested only on Ubuntu 24.04 LTS x64 (Intel/AMD); other Linux distributions have not been tested.** Requires an X11 desktop or XWayland. This is the original single-goggles viewer, not Multi or the independent Goggles 2 test app. Mac and Windows downloads are unchanged. Linux ARM64 and native Wayland are not included.
 
 ## Install
 
-Download the `.deb` from the [Linux release](https://github.com/knpuma/goggle-3-liveview/releases/tag/linux-v0.3.3). In the download folder:
+Download the `.deb` from the [main viewer release](https://github.com/knpuma/goggle-3-liveview/releases/tag/v0.3.2). In the download folder:
 
 ```sh
 sudo apt install ./Goggle-3-LiveView-Linux-x64-0.3.3.deb

@@ -1,8 +1,10 @@
-# Goggle 3 LiveView comes to Linux
+# Linux packages in the main Goggle 3 LiveView release
 
 Your DJI Goggles 3 screen on your Linux computer, over a direct USB cable. **No RC Pro. No Raspberry Pi. Free and open source.**
 
-This is the first Linux edition of the original, single-goggles viewer. It is separate from Multi and the Goggles 2 experiment; existing Mac and Windows downloads are unchanged.
+Linux downloads are published alongside Mac and Windows in the [main viewer release](https://github.com/knpuma/goggle-3-liveview/releases/tag/v0.3.2), not as a separate product or release. Existing Mac/Windows binaries keep version 0.3.2; Linux binaries keep version 0.3.3. Multi and the Goggles 2 experiment are unaffected.
+
+**Tested only on Ubuntu 24.04 x64. Other Linux distributions have not been tested.**
 
 ![Goggle 3 LiveView on Linux](https://raw.githubusercontent.com/knpuma/goggle-3-liveview/main/docs/assets/app-linux-en.png)
 
@@ -42,7 +44,7 @@ Without a linked aircraft, keep **Camera View Recording** enabled in **Settings 
 
 ## Linux preview and feedback
 
-Build, package installation, UI in both languages, fullscreen geometry, video rendering, UDP protocol loopback, H.264 decoding and MP4 finalization have been checked on Ubuntu 24.04 x64: [verified build and test run](https://github.com/knpuma/goggle-3-liveview/actions/runs/39485663644). **Physical Goggles 3 reception on Linux has not yet been verified.** This release is marked as a preview so Linux users can try it and report their results.
+Build, package installation, UI in both languages, fullscreen geometry, video rendering, UDP protocol loopback, H.264 decoding and MP4 finalization have been checked on Ubuntu 24.04 x64: [verified build and test run](https://github.com/knpuma/goggle-3-liveview/actions/runs/39485663644). **Physical Goggles 3 reception on Linux has not yet been verified.** The Linux port remains preliminary; please report your results through the main project's issue tracker.
 
 [Installation and troubleshooting](https://github.com/knpuma/goggle-3-liveview/blob/main/Linux/README.md) · [Guía en español](https://github.com/knpuma/goggle-3-liveview/blob/main/Linux/README.es.md) · [Report a problem](https://github.com/knpuma/goggle-3-liveview/issues) · [All editions](https://knpuma.github.io/goggle-3-liveview/)
 
