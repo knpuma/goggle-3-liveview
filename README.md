@@ -4,7 +4,7 @@
 
 ### Your DJI Goggles 3 screen, on your computer.
 
-Free, open-source USB viewers for **Mac and Windows**. Watch the goggles feed in a window or fullscreen and record video locally. **No RC Pro. No subscriptions.**
+Free, open-source USB viewers for **Mac, Windows and Linux**. Watch the goggles feed in a window or fullscreen and record video locally. **No RC Pro. No subscriptions.**
 
 [**Downloads & setup guide**](https://knpuma.github.io/goggle-3-liveview/) · [Report an issue](https://github.com/knpuma/goggle-3-liveview/issues)
 
@@ -12,7 +12,7 @@ Free, open-source USB viewers for **Mac and Windows**. Watch the goggles feed in
 
 | Application | What it does | Platforms |
 |---|---|---|
-| **Goggle 3 LiveView 0.3.2 · English** | One pair of goggles, one feed and MP4 recording | Apple Silicon Mac, Windows x64 / ARM64 |
+| **Goggle 3 LiveView** | One pair of goggles, one feed and MP4 recording | Mac / Windows 0.3.2; Linux x64 preview 0.3.3 |
 | **Goggle 3 LiveView Multi 0.4.1 · English** | Up to four USB channels, a 2×2 mosaic, individual and global MP4 recording | Apple Silicon Mac |
 
 Multi does not replace the original viewer. Both can be installed; close one before using the same goggles in the other. Each app has its own recording folder.
@@ -31,11 +31,25 @@ Multi does not replace the original viewer. Both can be installed; close one bef
 
 The apps do not have a commercial signing certificate; Mac packages are not notarized by Apple. Verify the download source and follow the [first-launch instructions](https://knpuma.github.io/goggle-3-liveview/#instalar). Do not disable system-wide security protections.
 
+## New: Linux x64
+
+**[Ubuntu 24.04 · .deb installer](https://github.com/knpuma/goggle-3-liveview/releases/download/linux-v0.3.3/Goggle-3-LiveView-Linux-x64-0.3.3.deb)** · **[Portable .tar.gz](https://github.com/knpuma/goggle-3-liveview/releases/download/linux-v0.3.3/Goggle-3-LiveView-Linux-x64-0.3.3.tar.gz)** · [Linux setup guide](Linux/README.md) · [Guía en español](Linux/README.es.md)
+
+**0.3.3 · Linux preview · English and Spanish in one app.** Intel/AMD x64, Ubuntu 24.04, X11 or XWayland. Connect directly over USB, record MP4 locally and use clean fullscreen. The .NET runtime is included; FFmpeg comes from your distribution. This is the single-goggles viewer, not Multi or the separate Goggles 2 experiment.
+
+```sh
+sudo apt install ./Goggle-3-LiveView-Linux-x64-0.3.3.deb
+```
+
+![Goggle 3 LiveView running on Linux, ready for USB](docs/assets/app-linux-en.png)
+
+Linux builds, package installation, UI, protocol loopback, decoding and MP4 recording are checked automatically. Physical Goggles 3 reception on Linux still needs community feedback; report problems through [GitHub issues](https://github.com/knpuma/goggle-3-liveview/issues). Existing Mac and Windows downloads remain unchanged.
+
 ## Download Multi
 
 **[Multi for Mac · English · 0.4.1](https://github.com/knpuma/goggle-3-liveview/releases/download/multi-v0.4.1/Goggle-3-LiveView-Multi-Mac-English.dmg)** · **[Español · 0.4.0](https://github.com/knpuma/goggle-3-liveview/releases/download/multi-v0.4.0/Goggle-3-LiveView-Multi-Mac.dmg)** · [Multi guide](Multi/README.md)
 
-Apple Silicon and macOS 14 or later. Multi is currently a Mac app; the original viewer is available for both Mac and Windows.
+Apple Silicon and macOS 14 or later. Multi is currently a Mac app; the original viewer is available for Mac, Windows and as a Linux preview.
 
 ![Goggle 3 LiveView Multi in English](docs/assets/multi-mac-en.png)
 
@@ -46,14 +60,14 @@ Apple Silicon and macOS 14 or later. Multi is currently a Mac app; the original 
 
 ![Built-in English tutorial](docs/assets/multi-tutorial-en.png)
 
-**Language editions:** the current apps are in English. Previous Spanish editions remain available above. There is no in-app language switch. Editions of the same app share its name and recording folder; installing another language replaces that edition without moving your recordings.
+**Language editions:** Mac and Windows English and Spanish downloads are separate; installing another language replaces that edition without moving recordings. Linux includes an **ES / EN** switch in the app.
 
 ## Connect in four steps
 
 1. **USB data cable.** Power on the Goggles 3 and connect them to your computer.
 2. **Enable OTG.** On the goggles: Settings → About → **OTG Wired Connection**.
 3. **Share LiveView.** Push the 5D button backward and enable liveview sharing to a mobile device via Wi-Fi. Despite the setting’s name, this app receives video over **USB**; your computer does not need to join the goggles Wi-Fi network.
-4. **Click Connect.** On Windows, the first connection may request administrator permission to configure only the goggles USB network adapter.
+4. **Click Connect.** On Windows and Linux, the first connection may request administrator permission to configure only the goggles USB network adapter. Follow the [Linux guide](Linux/README.md) for its driver and network requirements.
 
 ### Without a linked aircraft
 
@@ -63,15 +77,15 @@ Setting names follow the [official DJI manual](https://dl.djicdn.com/downloads/D
 
 ## Controls and recording
 
-**Connect / Disconnect** opens or closes the session. **Tutorial** shows setup instructions. **Record / Stop** saves a silent MP4 in Movies → Goggle 3 LiveView on Mac or Videos → Goggle 3 LiveView on Windows. Wait for saving to finish before quitting.
+**Connect / Disconnect** opens or closes the session. **Tutorial** shows setup instructions. **Record / Stop** saves a silent MP4 in Movies → Goggle 3 LiveView on Mac or Videos → Goggle 3 LiveView on Windows and Linux. Wait for saving to finish before quitting.
 
-The fullscreen icon is beside Record. **Esc** returns to the window; Windows also supports **F11**. FPS, resolution and bitrate describe the video processed by the computer, not the aircraft radio link.
+The fullscreen icon is beside Record. **Esc** returns to the window; Windows and Linux also support **F11**. FPS, resolution and bitrate describe the video processed by the computer, not the aircraft radio link. Linux displays its scaled preview size, 1920×1080.
 
 If the app waits for video, disconnect, restart LiveView sharing on the goggles and reconnect. Close other apps using the goggles USB device. See the [help page](https://knpuma.github.io/goggle-3-liveview/#ayuda).
 
 ## Build from source
 
-macOS uses SwiftUI, IOKit and a separate FFmpeg decoder. Windows uses WPF/.NET and Microsoft’s RNDIS driver. The apps do not modify firmware, send flight commands or upload video.
+macOS uses SwiftUI, IOKit and a separate FFmpeg decoder. Windows uses WPF/.NET and Microsoft’s RNDIS driver. Linux uses Avalonia/.NET, the kernel's RNDIS/USB network driver and system FFmpeg. The apps do not modify firmware, send flight commands or upload video.
 
 With Swift 6 and Apple developer tools:
 
@@ -82,13 +96,13 @@ zsh scripts/make-app.sh
 open "outputs/Goggle 3 LiveView.app"
 ```
 
-[Windows build guide](Windows/README.md) · [Multi project and build guide](Multi/README.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+[Windows build guide](Windows/README.md) · [Linux build guide](Linux/README.md#build) · [Multi project and build guide](Multi/README.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
 
 Historical internal module names and identifiers are retained for compatibility. Older Goggles3Mac recordings stay in their original folder.
 
 ## License and support
 
-Project code is licensed under [MIT](LICENSE). FFmpeg is distributed as a separate program under LGPL 2.1 or later, with matching source and license notices. .NET components retain their own licenses.
+Project code is licensed under [MIT](LICENSE). Mac/Windows FFmpeg is distributed as a separate program under LGPL 2.1 or later, with matching source and license notices. Linux packages do not redistribute FFmpeg; they use the distribution's executable. .NET and UI components retain their own licenses.
 
 Independent community project, not affiliated with or endorsed by DJI. DJI and Goggles are trademarks of their respective owners. Always use the goggles as your primary display when flying.
 
