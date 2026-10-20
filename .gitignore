@@ -7,3 +7,4 @@ outputs/
 **/config.mak
 *.pdb
 .DS_Store
+**/__pycache__/

@@ -1,0 +1,13 @@
+Package: goggle-3-liveview
+Version: 0.3.3
+Section: video
+Priority: optional
+Architecture: amd64
+Maintainer: knpuma <noreply@github.com>
+Homepage: https://github.com/knpuma/goggle-3-liveview
+Depends: libc6 (>= 2.39), libgcc-s1, libstdc++6, zlib1g, libssl3t64 | libssl3, libicu74 | libicu76 | libicu72, libx11-6, libice6, libsm6, libfontconfig1, libxrandr2, libxi6, libxcursor1, libgl1, ffmpeg (>= 6.0), python3 (>= 3.9), iproute2, pkexec, fonts-dejavu-core
+Recommends: xwayland
+Description: Direct USB viewer and MP4 recorder for DJI Goggles 3
+ Independent MIT community viewer. English and Spanish interface, local MP4
+ recording and clean fullscreen. No RC Pro or intermediate hardware required.
+ Requires USB OTG and LiveView sharing enabled on the goggles.

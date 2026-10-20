@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>goggle-3-liveview</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.22" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.22" />
+    <ProjectReference Include="../Goggle3.Linux.Core/Goggle3.Linux.Core.csproj" />
+    <AvaloniaResource Include="../../docs/assets/icon.png" Link="Assets/icon.png" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <Compile Include="../../Windows/Goggles3.Core/LiveProtocol.cs" Link="LiveProtocol.cs" />
+    <Compile Include="../../Windows/Goggles3.Core/FfmpegVideoSession.cs" Link="FfmpegVideoSession.cs" />
+  </ItemGroup>
+</Project>

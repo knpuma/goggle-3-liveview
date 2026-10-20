@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Goggle 3 LiveView
+Comment=DJI Goggles 3 USB viewer and local recorder
+Comment[es]=Visor USB para DJI Goggles 3 y grabación local
+Exec=/usr/bin/goggle-3-liveview
+Icon=goggle-3-liveview
+Terminal=false
+Categories=AudioVideo;Video;
+StartupWMClass=goggle-3-liveview

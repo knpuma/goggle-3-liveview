@@ -1,0 +1,62 @@
+name: Linux build and verification
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, linux-port]
+    paths: ['Linux/**', 'Windows/Goggles3.Core/**', 'Windows/Goggles3.Core.Tests/**', '.github/workflows/linux.yml']
+  pull_request:
+    paths: ['Linux/**', 'Windows/Goggles3.Core/**', 'Windows/Goggles3.Core.Tests/**', '.github/workflows/linux.yml']
+permissions:
+  contents: read
+jobs:
+  linux-x64:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '10.0.402'
+      - name: Install Linux runtime and test dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg xvfb xauth libx11-6 libice6 libsm6 libfontconfig1 libxrandr2 libxi6 libxcursor1 libgl1 fonts-dejavu-core desktop-file-utils pkexec
+      - name: Generate a test-only fixture, not included in downloads
+        run: ffmpeg -v error -f lavfi -i testsrc2=size=320x180:rate=60 -t 3 -c:v libx264 -preset ultrafast -f h264 /tmp/goggle-ci.h264
+      - name: Protocol, interface, decoding and MP4 tests (unprivileged)
+        env:
+          GOGGLE_TEST_H264: /tmp/goggle-ci.h264
+        run: |
+          dotnet test Linux/Goggle3.Linux.Tests/Goggle3.Linux.Tests.csproj -c Release --logger trx --results-directory outputs/linux-tests
+          python3 -m unittest discover -s Linux/scripts -p 'test_*.py' -v
+      - name: Build self-contained .deb and portable archive
+        run: bash Linux/scripts/package.sh
+      - name: Install the actual package
+        run: |
+          sudo apt-get install -y ./outputs/linux/*.deb
+          desktop-file-validate /usr/share/applications/goggle-3-liveview.desktop
+          test "$(stat -c '%U:%G' /usr/lib/goggle-3-liveview/prepare-usb.py)" = root:root
+          test ! -w /usr/lib/goggle-3-liveview/prepare-usb.py
+          ldd /usr/lib/goggle-3-liveview/goggle-3-liveview
+      - name: Exercise installed UI in X11 as a normal user
+        run: timeout 60s xvfb-run -a -s '-screen 0 1440x1000x24' /usr/bin/goggle-3-liveview --smoke-test "$PWD/outputs/linux-ui"
+      - name: Exercise portable archive
+        run: |
+          portable="$(mktemp -d)"
+          tar -xzf outputs/linux/*.tar.gz -C "$portable"
+          timeout 60s xvfb-run -a -s '-screen 0 1440x1000x24' "$portable/Goggle-3-LiveView-Linux-x64/goggle-3-liveview" --smoke-test "$PWD/outputs/linux-portable-ui"
+          cd outputs/linux && sha256sum -c SHA256SUMS-Linux.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: linux-x64-packages-and-verification
+          path: |
+            outputs/linux/
+            outputs/linux-tests/
+            outputs/linux-ui/
+            outputs/linux-portable-ui/
+          if-no-files-found: error
+          retention-days: 14
