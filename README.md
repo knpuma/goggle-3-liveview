@@ -24,6 +24,7 @@ Close other viewers before connecting to the same goggles.
 | Computer | English | Español |
 |---|---|---|
 | Mac · Apple M1 or later · macOS 14+ | [DMG](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Mac-Apple-Silicon-English.dmg) | [DMG](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.1/Goggle-3-LiveView-Mac-Apple-Silicon.dmg) |
+| Mac · Intel · macOS 14+ | [DMG](https://github.com/knpuma/goggle-3-liveview/releases/download/mac-intel-v0.3.2/Goggle-3-LiveView-Mac-Intel-English.dmg) | [DMG](https://github.com/knpuma/goggle-3-liveview/releases/download/mac-intel-v0.3.2/Goggle-3-LiveView-Mac-Intel.dmg) |
 | Windows 11 · Intel / AMD x64 | [ZIP](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Windows-x64-English.zip) | [ZIP](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.1/Goggle-3-LiveView-Windows-x64.zip) |
 | Windows 11 · ARM64 | [ZIP](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Windows-arm64-English.zip) | [ZIP](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.1/Goggle-3-LiveView-Windows-arm64.zip) |
 | Linux · Intel / AMD x64 · tested only on Ubuntu 24.04 | [DEB](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Linux-x64-0.3.3.deb) · [Portable](https://github.com/knpuma/goggle-3-liveview/releases/download/v0.3.2/Goggle-3-LiveView-Linux-x64-0.3.3.tar.gz) | Included in the same download · ES / EN switch |
@@ -101,9 +102,15 @@ zsh scripts/make-app.sh
 open "outputs/Goggle 3 LiveView.app"
 ```
 
+For the original viewer on Intel Macs, use `zsh scripts/make-intel-dmg.sh`. This builds the app, USB receiver and FFmpeg for `x86_64`; the existing Apple Silicon scripts and downloads are unchanged.
+
 [Windows build guide](Windows/README.md) · [Linux build guide](Linux/README.md#build) · [Multi project and build guide](Multi/README.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
 
 Historical internal module names and identifiers are retained for compatibility. Older Goggles3Mac recordings stay in their original folder.
+
+## Contributors
+
+Thanks to **Álvaro ([@alantoad](https://github.com/alantoad))** for his contribution specifically to the version for Intel-based Macs and for reporting a successful test with his DJI Goggles 3.
 
 ## License and support
 
