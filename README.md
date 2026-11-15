@@ -2,6 +2,8 @@
 
 # Goggle 3 LiveView
 
+> **Official repository and releases** — Download Goggle 3 LiveView only from this repository's [official releases](https://github.com/knpuma/goggle-3-liveview/releases) or the [project website](https://knpuma.github.io/goggle-3-liveview/). Community forks are welcome under the MIT license, but their downloads, changes and support are maintained independently.
+
 ### Your DJI Goggles 3 screen, on your computer.
 
 Free, open-source USB viewers for **Mac, Windows and Linux**. Watch the goggles feed in a window or fullscreen and record video locally. **No RC Pro. No subscriptions.**
